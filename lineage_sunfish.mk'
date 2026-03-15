@@ -4,6 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Shave off space to pass the 18MB overflow
+PRODUCT_PACKAGES_FILTER_OUT += \
+    MarkupGoogle \
+    GoogleTTS
+
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
@@ -20,23 +25,19 @@ PRODUCT_NAME := lineage_sunfish
 # Boot animation
 TARGET_SCREEN_HEIGHT := 2340
 TARGET_SCREEN_WIDTH := 1080
-
-#Flags:
 #i dont want call recording so bye ig? also other small thigs
 #EVO_BUILD_TYPE := Official
 #Private build so idgaf
 EVO_BUILD_TYPE := Unofficial
-#Ok so i gaf now..
+#Ok so i gaf now cause its not so private...
 WITH_GMS := true
 TARGET_USES_MINI_GAPPS := false
-TARGET_USES_PICO_GAPPS := false
+TARGET_USES_PICO_GAPPS := true
 #Bye full gapps :(
-BUILD_BCR := true
+BUILD_BCR := false
 TARGET_HAS_UDFPS := false
 TARGET_INCLUDE_ACCORD := false
 TARGET_DISABLE_EPPE := false
-
-PRODUCT_COMPRESSED_APEX := true
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="sunfish-user 13 TQ3A.230805.001.S1 10786265 release-keys" \

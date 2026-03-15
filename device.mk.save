@@ -16,15 +16,18 @@
 
 PRODUCT_PACKAGES += \
     EmojiWorkshop \
-    Velvet
-
-#    aiwallpapers \
-#    WallpaperEffect \
-#    PixelLiveWallpaperPrebuilt
+    aiwallpapers \
+    WallpaperEffect \
+    PixelLiveWallpaperPrebuilt
 
 PRODUCT_COPY_FILES += \
     vendor/google/sunfish/permissions/privapp-permissions-google.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-google.xml
 
+# Enable Desktop Mode / Freeform Windows
+PRODUCT_SYSTEM_PROPERTIES += \
+    persist.sys.freeform_window_management=true \
+    persist.wm.debug.desktop_mode=true \
+    persist.wm.enable_desktop_windowing=true
 
 LOCAL_PATH := device/google/sunfish
 
