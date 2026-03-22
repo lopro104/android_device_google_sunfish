@@ -47,4 +47,5 @@ $(call inherit-product, vendor/google/sunfish/sunfish-vendor.mk)
 # Completely disable the artifact path check that failed
 PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := false
 
-
+PRODUCT_DEFAULT_DEV_CERTIFICATE := android-certs/releasekey
+PRODUCT_NOT_DEBUGGABLE_IN_USERDEBUG :=
