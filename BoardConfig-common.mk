@@ -18,11 +18,17 @@ include build/make/target/board/BoardConfigMainlineCommon.mk
 include build/make/target/board/BoardConfigPixelCommon.mk
 
 BOARD_AVB_ENABLE := true
-BOARD_AVB_MAKE_VBMETA_SYSTEM_IMAGE_ARGS += --flag 2
-BOARD_AVB_SYSTEM_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
-BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
-BOARD_AVB_PRODUCT_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
-BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
+
+# Remove '--flag 2' (which is the 'disable verification' flag)
+BOARD_AVB_MAKE_VBMETA_SYSTEM_IMAGE_ARGS += --padding_size 4096
+
+# You MUST include hashtrees if you want the hardware to verify the blocks
+# Remove '--no_hashtree' from all of these
+BOARD_AVB_SYSTEM_ADD_HASHTREE_FOOTER_ARGS +=
+BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS +=
+BOARD_AVB_PRODUCT_ADD_HASHTREE_FOOTER_ARGS +=
+BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS +=
+
 TARGET_BOARD_PLATFORM := sm6150
 TARGET_BOARD_INFO_FILE := device/google/sunfish/board-info.txt
 USES_DEVICE_GOOGLE_SUNFISH := true
