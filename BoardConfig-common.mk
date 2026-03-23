@@ -20,14 +20,14 @@ include build/make/target/board/BoardConfigPixelCommon.mk
 BOARD_AVB_ENABLE := true
 
 # Remove '--flag 2' (which is the 'disable verification' flag)
-BOARD_AVB_MAKE_VBMETA_SYSTEM_IMAGE_ARGS += --padding_size 4096
+BOARD_AVB_MAKE_VBMETA_SYSTEM_IMAGE_ARGS += --flag 2
 
 # You MUST include hashtrees if you want the hardware to verify the blocks
 # Remove '--no_hashtree' from all of these
-BOARD_AVB_SYSTEM_ADD_HASHTREE_FOOTER_ARGS +=
-BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS +=
-BOARD_AVB_PRODUCT_ADD_HASHTREE_FOOTER_ARGS +=
-BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS +=
+BOARD_AVB_SYSTEM_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
+BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
+BOARD_AVB_PRODUCT_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
+BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
 
 TARGET_BOARD_PLATFORM := sm6150
 TARGET_BOARD_INFO_FILE := device/google/sunfish/board-info.txt
@@ -112,7 +112,10 @@ BOARD_AVB_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_KEY_PATH := android-certs/releasekey.pem
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := android-certs/releasekey.pem
 PRODUCT_DEFAULT_DEV_KEYS := android-certs/releasekey
+
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT := -1
+BOARD_EXT4_SHARE_DUP_BLOCKS := true
 
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 
@@ -236,3 +239,14 @@ BOARD_SUPER_PARTITION_ERROR_LIMIT := 9231663104
 
 include device/google/sunfish/BoardConfigLineage.mk
 
+
+# Remove reserved space to fit into the Super partition
+BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 0
+BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 0
+BOARD_SYSTEM_EXTIMAGE_PARTITION_RESERVED_SIZE := 0
+BOARD_VENDORIMAGE_PARTITION_RESERVED_SIZE := 0
+
+# Also, ensure the build system isn't trying to pre-allocate huge empty chunks
+TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
+# This saves space in the image but makes the first boot slower
+DONT_DEXPREOPT_PREBUILTS := true
