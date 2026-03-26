@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 
-PRODUCT_PACKAGES += \
-    EmojiWorkshop \
-    Velvet
+#PRODUCT_PACKAGES += \
+#    EmojiWorkshop \
+#    Velvet
 
 #    aiwallpapers \
 #    WallpaperEffect \
