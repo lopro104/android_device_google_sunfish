@@ -23,7 +23,6 @@
 #    PixelLiveWallpaperPrebuilt
 
 PRODUCT_COPY_FILES += \
-    vendor/google/sunfish/permissions/privapp-permissions-google.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-google.xml
 
 
 LOCAL_PATH := device/google/sunfish
