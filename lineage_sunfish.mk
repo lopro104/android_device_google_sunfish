@@ -30,11 +30,15 @@ EVO_BUILD_TYPE := Unofficial
 WITH_GMS := true
 TARGET_USES_MINI_GAPPS := false
 TARGET_USES_PICO_GAPPS := false
+
 #Bye full gapps :(
 BUILD_BCR := true
 TARGET_HAS_UDFPS := false
 TARGET_INCLUDE_ACCORD := false
 TARGET_DISABLE_EPPE := false
+
+PRODUCT_DEFAULT_DEV_CERTIFICATE := vendor/evolution-priv/keys/releasekey
+PRODUCT_OTACERT := vendor/evolution-priv/keys/releasekey
 
 PRODUCT_COMPRESSED_APEX := true
 
@@ -48,3 +52,4 @@ $(call inherit-product, vendor/google/sunfish/sunfish-vendor.mk)
 PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := false
 
 
+PRODUCT_PACKAGES += SCONE-v64263

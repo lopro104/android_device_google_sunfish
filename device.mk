@@ -21,13 +21,17 @@
 #    aiwallpapers \
 #    WallpaperEffect \
 #    PixelLiveWallpaperPrebuilt
-
+PRODUCT_PACKAGES += \
+    UpdaterOverlay
 
 LOCAL_PATH := device/google/sunfish
 
 PRODUCT_VENDOR_MOVE_ENABLED := true
 TARGET_BOARD_PLATFORM := sm6150
 MSMSTEPPE := sm6150
+
+PRODUCT_COPY_FILES += \
+    device/google/sunfish/privapp-permissions-sunfish.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-sunfish.xml
 
 PRODUCT_SOONG_NAMESPACES += \
     device/google/sunfish \
