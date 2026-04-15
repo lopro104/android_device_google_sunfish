@@ -11,7 +11,7 @@
 | **Dimensions** | 144 x 69.4 x 8.2 mm |
 | **Ship Android** | Android 10 |
 | **Latest Official** | Android 13 (EOL) |
-## Working stuff:
+## Working things:
 | Feature | Works/Not  | 
 | :--- | :--- |
 | **Brightness** | ✅ |
