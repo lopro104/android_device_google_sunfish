@@ -22,15 +22,12 @@ TARGET_SCREEN_HEIGHT := 2340
 TARGET_SCREEN_WIDTH := 1080
 
 #Flags:
-#i dont want call recording so bye ig? also other small thigs
-#EVO_BUILD_TYPE := Official
-#Private build so idgaf
 EVO_BUILD_TYPE := Unofficial
-#Ok so i gaf now..
+#Gapps
 WITH_GMS := true
-TARGET_USES_MINI_GAPPS := false
+TARGET_USES_MINI_GAPPS := true
 TARGET_USES_PICO_GAPPS := false
-#Bye full gapps :(
+#Other
 BUILD_BCR := true
 TARGET_HAS_UDFPS := false
 TARGET_INCLUDE_ACCORD := false
