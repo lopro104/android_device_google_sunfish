@@ -21,6 +21,18 @@ PRODUCT_NAME := lineage_sunfish
 TARGET_SCREEN_HEIGHT := 2340
 TARGET_SCREEN_WIDTH := 1080
 
+#Some apps:
+TARGET_INCLUDE_LIVE_WALLPAPERS := true
+PRODUCT_PACKAGES += \
+    WallpaperEffect \
+    PixelLiveWallpaperPrebuilt-26000013 \
+    DevicePersonalizationAiAiPrebuiltPixel2025 \
+    MagicPortraitWallpapers \
+    MagicPortraitSymLink
+
+# Remove specifically Tycho and Google Photos from the list
+PRODUCT_PACKAGES := $(filter-out DevicePersonalizationPrebuiltPixel2020 , $(PRODUCT_PACKAGES))
+
 #Flags:
 EVO_BUILD_TYPE := Unofficial
 #Gapps
