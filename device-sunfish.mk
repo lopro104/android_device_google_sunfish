@@ -20,7 +20,7 @@ PRODUCT_HARDWARE := sunfish
 
 include device/google/sunfish/device-common.mk
 
-DEVICE_PACKAGE_OVERLAYS += device/google/sunfish/sunfish/overlay
+DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/sunfish/overlay
 
 # Display Device Config
 PRODUCT_COPY_FILES += \
