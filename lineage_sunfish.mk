@@ -39,6 +39,8 @@ EVO_BUILD_TYPE := Unofficial
 WITH_GMS := true
 TARGET_USES_MINI_GAPPS := true
 TARGET_USES_PICO_GAPPS := false
+#remove dexpreopts to save storage on super partition
+#WITH_DEXPREOPT := false
 #Other
 BUILD_BCR := true
 TARGET_HAS_UDFPS := false
