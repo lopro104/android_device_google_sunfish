@@ -14,16 +14,6 @@
 # limitations under the License.
 #
 
-#PRODUCT_PACKAGES += \
-#    EmojiWorkshop \
-#    Velvet
-
-#    aiwallpapers \
-#    WallpaperEffect \
-#    PixelLiveWallpaperPrebuilt
-PRODUCT_PACKAGES += \
-    UpdaterOverlay
-
 LOCAL_PATH := device/google/sunfish
 
 PRODUCT_VENDOR_MOVE_ENABLED := true

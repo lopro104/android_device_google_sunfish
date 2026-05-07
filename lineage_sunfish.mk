@@ -22,16 +22,22 @@ TARGET_SCREEN_HEIGHT := 2340
 TARGET_SCREEN_WIDTH := 1080
 
 #Flags:
-#i dont want call recording so bye ig? also other small thigs
-#EVO_BUILD_TYPE := Official
-#Private build so idgaf
 EVO_BUILD_TYPE := Unofficial
-#Ok so i gaf now..
 WITH_GMS := true
 TARGET_USES_MINI_GAPPS := false
 TARGET_USES_PICO_GAPPS := false
+ifeq (&(WITH_GMS), true)
+TARGET_INCLUDE_LIVE_WALLPAPERS := true
+PRODUCT_PACKAGES += \
+    WallpaperEffect \
+    PixelLiveWallpaperPrebuilt-26000013 \
+    DevicePersonalizationAiAiPrebuiltPixel2025 \
+    MagicPortraitWallpapers \
+    MagicPortraitSymLink
 
-#Bye full gapps :(
+PRODUCT_PACKAGES := $(filter-out DevicePersonalizationPrebuiltPixel2020 , $(PRODUCT_PACKAGES))
+
+endif
 BUILD_BCR := true
 TARGET_HAS_UDFPS := false
 TARGET_INCLUDE_ACCORD := false
@@ -48,8 +54,6 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     DeviceProduct=sunfish
 
 $(call inherit-product, vendor/google/sunfish/sunfish-vendor.mk)
-# Completely disable the artifact path check that failed
+
 PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := false
 
-
-PRODUCT_PACKAGES += SCONE-v64263
