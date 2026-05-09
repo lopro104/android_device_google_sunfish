@@ -26,18 +26,6 @@ EVO_BUILD_TYPE := Unofficial
 WITH_GMS := true
 TARGET_USES_MINI_GAPPS := false
 TARGET_USES_PICO_GAPPS := false
-ifeq (&(WITH_GMS), true)
-TARGET_INCLUDE_LIVE_WALLPAPERS := true
-PRODUCT_PACKAGES += \
-    WallpaperEffect \
-    PixelLiveWallpaperPrebuilt-26000013 \
-    DevicePersonalizationAiAiPrebuiltPixel2025 \
-    MagicPortraitWallpapers \
-    MagicPortraitSymLink
-
-PRODUCT_PACKAGES := $(filter-out DevicePersonalizationPrebuiltPixel2020 , $(PRODUCT_PACKAGES))
-
-endif
 BUILD_BCR := true
 TARGET_HAS_UDFPS := false
 TARGET_INCLUDE_ACCORD := false
