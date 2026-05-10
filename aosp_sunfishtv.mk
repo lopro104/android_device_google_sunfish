@@ -42,9 +42,9 @@ TARGET_SUPPORTS_OMX_SERVICE := false
 $(call inherit-product, $(SRC_TARGET_DIR)/product/handheld_vendor.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/telephony_vendor.mk)
 
-$(call inherit-product, device/google/sunfish/device-sunfish.mk)
-$(call inherit-product-if-exists, vendor/google_devices/sunfish/proprietary/device-vendor.mk)
-$(call inherit-product-if-exists, vendor/google_devices/sunfish/prebuilts/device-vendor-sunfish.mk)
+$(call inherit-product, device/google/sunfishtv/device-sunfish.mk)
+$(call inherit-product-if-exists, vendor/google_devices/sunfishtv/proprietary/device-vendor.mk)
+$(call inherit-product-if-exists, vendor/google_devices/sunfishtv/prebuilts/device-vendor-sunfish.mk)
 
 # Keep the VNDK APEX in /system partition for REL branches as these branches are
 # expected to have stable API/ABI surfaces.
@@ -57,6 +57,6 @@ endif
 
 PRODUCT_MANUFACTURER := Google
 PRODUCT_BRAND := Android
-PRODUCT_NAME := aosp_sunfish
-PRODUCT_DEVICE := sunfish
+PRODUCT_NAME := aosp_sunfishtv
+PRODUCT_DEVICE := sunfishtv
 PRODUCT_MODEL := AOSP on sunfish

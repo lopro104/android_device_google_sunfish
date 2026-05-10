@@ -17,7 +17,7 @@
 # define hardware platform
 PRODUCT_PLATFORM := sm7150
 
-include device/google/sunfish/device.mk
+include device/google/sunfishtv/device.mk
 
 # Set Vendor SPL to match platform
 VENDOR_SECURITY_PATCH = 2023-09-05
@@ -76,10 +76,10 @@ PRODUCT_PRODUCT_PROPERTIES += \
 
 # Modem loging file
 PRODUCT_COPY_FILES += \
-    device/google/sunfish/init.logging.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.$(PRODUCT_PLATFORM).logging.rc
+    device/google/sunfishtv/init.logging.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.$(PRODUCT_PLATFORM).logging.rc
 
 PRODUCT_COPY_FILES += \
-    device/google/sunfish/task_profiles.json:$(TARGET_COPY_OUT_VENDOR)/etc/task_profiles.json
+    device/google/sunfishtv/task_profiles.json:$(TARGET_COPY_OUT_VENDOR)/etc/task_profiles.json
 
 # Pixelstats broken mic detection
 PRODUCT_PROPERTY_OVERRIDES += vendor.audio.mic_break=true

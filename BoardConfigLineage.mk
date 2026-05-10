@@ -19,8 +19,8 @@ AB_OTA_PARTITIONS += \
 -include vendor/lineage/config/BoardConfigReservedSize.mk
 
 # SELinux
-BOARD_SEPOLICY_DIRS += device/google/sunfish/sepolicy-lineage/dynamic
-BOARD_SEPOLICY_DIRS += device/google/sunfish/sepolicy-lineage/vendor
+BOARD_SEPOLICY_DIRS += device/google/sunfishtv/sepolicy-lineage/dynamic
+BOARD_SEPOLICY_DIRS += device/google/sunfishtv/sepolicy-lineage/vendor
 
 # Verified Boot
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3

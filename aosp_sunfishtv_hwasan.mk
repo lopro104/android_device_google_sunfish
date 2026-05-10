@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 
-$(call inherit-product, device/google/sunfish/aosp_sunfish.mk)
-PRODUCT_NAME := aosp_sunfish_hwasan
+$(call inherit-product, device/google/sunfishtv/aosp_sunfishtv.mk)
+PRODUCT_NAME := aosp_sunfishtv_hwasan
 
 # Add "hwaddress" as a global sanitizer if it's missing.
 ifeq ($(filter hwaddress,$(SANITIZE_TARGET)),)

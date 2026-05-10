@@ -16,13 +16,13 @@
 
 PRODUCT_HARDWARE := sunfish
 
-include device/google/sunfish/device-common.mk
+include device/google/sunfishtv/device-common.mk
 
-DEVICE_PACKAGE_OVERLAYS += device/google/sunfish/sunfish/overlay
+DEVICE_PACKAGE_OVERLAYS += device/google/sunfishtv/sunfishtv/overlay
 
 # Display Device Config
 PRODUCT_COPY_FILES += \
-    device/google/sunfish/displayconfig/display_id_4630946475097398401.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_id_4630946475097398401.xml
+    device/google/sunfishtv/displayconfig/display_id_4630946475097398401.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_id_4630946475097398401.xml
 
 # Audio XMLs for sunfish
 PRODUCT_COPY_FILES += \
@@ -103,7 +103,7 @@ PRODUCT_PACKAGES += \
     SettingsOverlayG025N \
 
 # Fingerprint HIDL
-include device/google/sunfish/fingerprint.mk
+include device/google/sunfishtv/fingerprint.mk
 
 # Keyboard height ratio and bottom padding in dp for portrait mode
 PRODUCT_PRODUCT_PROPERTIES += \

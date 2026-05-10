@@ -24,7 +24,7 @@ BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
 BOARD_AVB_PRODUCT_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
 BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS += --no_hashtree
 TARGET_BOARD_PLATFORM := sm6150
-TARGET_BOARD_INFO_FILE := device/google/sunfish/board-info.txt
+TARGET_BOARD_INFO_FILE := device/google/sunfishtv/board-info.txt
 USES_DEVICE_GOOGLE_SUNFISH := true
 
 TARGET_ARCH := arm64
@@ -41,7 +41,7 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
 TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a76
 
-TARGET_BOARD_COMMON_PATH := device/google/sunfish/sm7150
+TARGET_BOARD_COMMON_PATH := device/google/sunfishtv/sm7150
 
 BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200n8 androidboot.console=ttyMSM0 printk.devkmsg=on
 BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237
@@ -86,8 +86,8 @@ AB_OTA_PARTITIONS += \
      vbmeta_system
 
 # Partitions (listed in the file) to be wiped under recovery.
-TARGET_RECOVERY_WIPE := device/google/sunfish/recovery.wipe
-TARGET_RECOVERY_FSTAB := device/google/sunfish/fstab.hardware
+TARGET_RECOVERY_WIPE := device/google/sunfishtv/recovery.wipe
+TARGET_RECOVERY_FSTAB := device/google/sunfishtv/fstab.hardware
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_RECOVERY_UI_LIB := \
     //hardware/google/pixel/recovery:librecovery_ui_pixel \
@@ -124,9 +124,9 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_ROOT_EXTRA_SYMLINKS := /vendor/dsp:/dsp
 BOARD_ROOT_EXTRA_SYMLINKS += /mnt/vendor/persist:/persist
 
-include device/google/sunfish/sepolicy/sunfish-sepolicy.mk
+include device/google/sunfishtv/sepolicy/sunfish-sepolicy.mk
 
-TARGET_FS_CONFIG_GEN := device/google/sunfish/config.fs
+TARGET_FS_CONFIG_GEN := device/google/sunfishtv/config.fs
 
 QCOM_BOARD_PLATFORMS += sm6150
 MSMSTEPPE = sm6150
@@ -190,12 +190,12 @@ AUDIO_FEATURE_ENABLED_CS35L41 := true
 AUDIO_FEATURE_ENABLED_CS35L41_CALIBRATION_TOOL := true
 
 # Vendor Interface Manifest
-DEVICE_MANIFEST_FILE := device/google/sunfish/manifest.xml
-DEVICE_MATRIX_FILE := device/google/sunfish/compatibility_matrix.xml
+DEVICE_MANIFEST_FILE := device/google/sunfishtv/manifest.xml
+DEVICE_MATRIX_FILE := device/google/sunfishtv/compatibility_matrix.xml
 # Install product specific framework compatibility matrix
 # (TODO: b/169535506) This includes the FCM for system_ext and product partition.
 # It must be split into the FCM of each partition.
-DEVICE_PRODUCT_COMPATIBILITY_MATRIX_FILE += device/google/sunfish/device_framework_matrix_product.xml
+DEVICE_PRODUCT_COMPATIBILITY_MATRIX_FILE += device/google/sunfishtv/device_framework_matrix_product.xml
 
 # Use mke2fs to create ext4 images
 TARGET_USES_MKE2FS := true
@@ -218,9 +218,9 @@ BOARD_SUPER_PARTITION_ERROR_LIMIT := 9755951104
 # Testing related defines
 #BOARD_PERFSETUP_SCRIPT := platform_testing/scripts/perf-setup/s5-setup.sh
 
--include vendor/google_devices/sunfish/proprietary/BoardConfigVendor.mk
+-include vendor/google_devices/sunfishtv/proprietary/BoardConfigVendor.mk
 
-include device/google/sunfish/BoardConfigLineage.mk
+include device/google/sunfishtv/BoardConfigLineage.mk
 
 BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 0
 BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 0

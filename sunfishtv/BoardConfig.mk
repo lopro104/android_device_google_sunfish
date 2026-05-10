@@ -14,8 +14,6 @@
 # limitations under the License.
 #
 
-TARGET_ENABLE_DESKTOP_MODE := true
-
 ifdef AUTOMOTIVE_PRODUCT_PATH
   #RBC# include_top device/google/auto_tcu
   #RBC# include_top device/google/pixel_tcu
@@ -26,6 +24,6 @@ else
   TARGET_SCREEN_DENSITY := 440
   TARGET_RECOVERY_UI_MARGIN_HEIGHT := 165
 
-  include device/google/sunfish/BoardConfig-common.mk
+  include device/google/sunfishtv/BoardConfig-common.mk
 endif
 

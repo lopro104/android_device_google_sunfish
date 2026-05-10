@@ -14,17 +14,18 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/google/sunfish
+LOCAL_PATH := device/google/sunfishtv
+
 
 PRODUCT_VENDOR_MOVE_ENABLED := true
 TARGET_BOARD_PLATFORM := sm6150
 MSMSTEPPE := sm6150
 
 PRODUCT_COPY_FILES += \
-    device/google/sunfish/privapp-permissions-sunfish.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-sunfish.xml
+    device/google/sunfishtv/privapp-permissions-sunfish.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-sunfish.xml
 
 PRODUCT_SOONG_NAMESPACES += \
-    device/google/sunfish \
+    device/google/sunfishtv \
     hardware/google/interfaces \
     hardware/google/pixel \
     hardware/qcom/sm8150/display \
@@ -48,8 +49,8 @@ PRODUCT_PRODUCT_PROPERTIES += \
     masterclear.allow_retain_esim_profiles_after_fdr=true
 
 PRODUCT_COPY_FILES += \
-    device/google/sunfish/default-permissions.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions.xml \
-    device/google/sunfish/component-overrides.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/component-overrides.xml \
+    device/google/sunfishtv/default-permissions.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions.xml \
+    device/google/sunfishtv/component-overrides.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/component-overrides.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.software.verified_boot.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.verified_boot.xml \
     frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.freeform_window_management.xml
@@ -65,7 +66,8 @@ $(call inherit-product, $(LOCAL_PATH)/utils.mk)
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
-PRODUCT_CHARACTERISTICS := nosdcard
+PRODUCT_CHARACTERISTICS := tv
+PRODUCT_IS_ATV := true
 PRODUCT_SHIPPING_API_LEVEL := 29
 
 # Enforce native interfaces of product partition as VNDK
@@ -345,9 +347,9 @@ PRODUCT_PACKAGES += \
     NfcOverlaySunfish
 
 PRODUCT_COPY_FILES += \
-    device/google/sunfish/nfc/libnfc-hal-st.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-hal-st.conf \
-    device/google/sunfish/nfc/libese-hal-st.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libese-hal-st.conf \
-    device/google/sunfish/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_PRODUCT)/etc/libnfc-nci.conf
+    device/google/sunfishtv/nfc/libnfc-hal-st.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-hal-st.conf \
+    device/google/sunfishtv/nfc/libese-hal-st.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libese-hal-st.conf \
+    device/google/sunfishtv/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_PRODUCT)/etc/libnfc-nci.conf
 
 # USB HAL
 PRODUCT_PACKAGES += \
@@ -587,7 +589,7 @@ BOARD_USES_QCNE := true
 
 #per device
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/sunfish/init.sunfish.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.sunfish.rc
+    $(LOCAL_PATH)/sunfishtv/init.sunfish.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.sunfish.rc
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/sec_config:$(TARGET_COPY_OUT_VENDOR)/etc/sec_config
