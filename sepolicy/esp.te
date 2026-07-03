@@ -1,0 +1,6 @@
+# The ESP is a custom GPT partition (not in any stock policy); without a
+# dedicated label it falls back to block_device, which fastbootd is
+# neverallowed to write — "fastboot flash esp" then fails with ENOENT.
+type esp_block_device, dev_type;
+
+allow fastbootd esp_block_device:blk_file rw_file_perms;

@@ -1,0 +1,20 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+import /vendor/etc/init/hw/init.mainline.qcom.rc
+
+# Kernel module loading
+on post-fs
+    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -s -d /vendor/lib/modules --all=/vendor/etc/modules.load.normal
+    trigger start_all_remoteproc
+
+# Mount
+on fs
+    # Mount everything that does not require fsck
+    mount_all --early
+
+on late-fs
+    # Mount RW partitions which need run fsck
+    mount_all --late

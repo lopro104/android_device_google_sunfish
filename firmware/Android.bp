@@ -1,0 +1,42 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+install_symlink {
+    name: "symlink_firmware_sunfish",
+    vendor: true,
+    installed_location: "firmware/qcom/sm7150/google/sunfish",
+    symlink_target: "/odm/firmware/qcom/sm7150/google/sunfish",
+}
+
+genrule {
+    name: "gen_firmware_sunfish_ipa_fws.mbn",
+    tools: ["pil-squasher"],
+    out: ["ipa_fws.mbn"],
+    cmd: "$(location pil-squasher) $(out) ../../../../../vendor/google/sunfish/proprietary/vendor/firmware/ipa_fws.mdt",
+}
+
+prebuilt_firmware {
+    name: "firmware_sunfish_ipa_fws.mbn",
+    src: ":gen_firmware_sunfish_ipa_fws.mbn",
+    filename_from_src: true,
+    device_specific: true,
+    sub_dir: "qcom/sm7150/google/sunfish",
+}
+
+// Workaround soong installing device_specific prebuilt_firmware module to /odm/etc/firmware
+install_symlink {
+    name: "symlink_firmware_sunfish_ipa_fws.mbn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7150/google/sunfish/ipa_fws.mbn",
+    symlink_target: "/odm/etc/firmware/qcom/sm7150/google/sunfish/ipa_fws.mbn",
+}
+
+phony {
+    name: "all_symlink_firmware_sunfish",
+    required: [
+        "symlink_firmware_sunfish",
+        "symlink_firmware_sunfish_ipa_fws.mbn",
+    ],
+}

@@ -1,0 +1,9 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Unlike the Xiaomi sm7150 devices, Pixels only keep the modem firmware on
+# the modem (firmware_mnt) partition; adsp/cdsp firmware is in /vendor/firmware
+firmware_directories /vendor/firmware_mnt/image/ /vendor/firmware/ /odm/firmware/
+modalias_handling enabled

@@ -1,0 +1,7 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+on early-boot
+    write /sys/class/backlight/ae94000.dsi.0/brightness 1023
