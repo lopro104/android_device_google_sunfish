@@ -2,6 +2,9 @@ soong_namespace {
     imports: [
         "hardware/google/interfaces",
         "hardware/google/pixel",
+	"hardware/google/pixel/usb",
+	"hardware/google/pixel/pixelstats",
+	"hardware/google/pixel/health",
     ],
 }
 
