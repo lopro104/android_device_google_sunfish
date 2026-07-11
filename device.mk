@@ -97,6 +97,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ueventd.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc \
     $(LOCAL_PATH)/init.ramoops.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.ramoops.sh \
 
+PRODUCT_SOURCE_ROOT_DIRS += -external/drm_hwcomposer-upstream
+
 # Partitions
 PRODUCT_PACKAGES += \
     vendor_firmware_mnt_mountpoint
