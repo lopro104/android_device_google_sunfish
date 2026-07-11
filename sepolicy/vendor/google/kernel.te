@@ -1,0 +1,3 @@
+# per_boot_file access moved to platform policy in Android 17 —
+# AOSP now provides `allow kernel per_boot_file:file r_file_perms`
+# in system/sepolicy/private/kernel.te. Intentionally empty.

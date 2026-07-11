@@ -1,0 +1,6 @@
+# per_boot_file became a platform-private type in Android 17
+# (declared in system/sepolicy/private/file.te). These init rules must
+# live in platform-private policy, since vendor policy cannot reference
+# platform-private types. Moved here from sepolicy/vendor/google/init.te.
+allow init per_boot_file:file ioctl;
+allowxperm init per_boot_file:file ioctl { F2FS_IOC_SET_PIN_FILE };

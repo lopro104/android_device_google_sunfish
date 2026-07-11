@@ -10,3 +10,4 @@ PRODUCT_MAKEFILES := \
 $(foreach build_type, user userdebug eng, \
     $(eval COMMON_LUNCH_CHOICES += aosp_sunfish_mainline-$(build_type)) \
     $(eval COMMON_LUNCH_CHOICES += lineage_sunfish_mainline-$(build_type)))
+

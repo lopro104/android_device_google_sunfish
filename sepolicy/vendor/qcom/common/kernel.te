@@ -1,0 +1,10 @@
+# For diag over socket
+allow kernel self:qipcrtr_socket create;
+
+dontaudit kernel self:qipcrtr_socket create;
+
+# TODO(b/132393658): remove redundant log during selinux setup
+dontaudit kernel self:capability sys_admin;
+dontaudit kernel sepolicy_file:file getattr;
+dontaudit kernel system_bootstrap_lib_file:dir getattr;
+dontaudit kernel system_bootstrap_lib_file:file getattr;

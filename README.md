@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Same as kernel:
 This was made with Claude Fable 5 — just for fun (and to obviously test Anthropic's new model).
 I almost never use AI during any normal work!
@@ -8,4 +9,5 @@ Battery percentage
 UI Padding (related to display)
 etc...
 
-If it dosen't work in postmarketOS then it probably wont work here too! 
+If something dosen't work in postmarketOS then it probably wont work here too! 
+
