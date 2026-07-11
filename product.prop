@@ -122,3 +122,9 @@ bluetooth.profile.sap.server.enabled?=true
 
 # eBPF
 ro.bpf.kver_override=5.10.239
+
+# A17 casefolding_remover: 4.14 kernel has no f2fs casefold (CONFIG_UNICODE),
+# so the tool can wedge before setting ro.casefolding.adjusted, hanging init at
+# `wait_for_prop ro.casefolding.adjusted 1`. Disable casefold + pre-satisfy the wait.
+external_storage.casefold.enabled=0
+ro.casefolding.adjusted=1

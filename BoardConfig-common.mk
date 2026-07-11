@@ -43,7 +43,7 @@ TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a76
 
 TARGET_BOARD_COMMON_PATH := device/google/sunfish/sm7150
 
-BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200n8 androidboot.console=ttyMSM0 printk.devkmsg=on
+BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200n8 console=tty0 androidboot.console=ttyMSM0 printk.devkmsg=on
 BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237
 BOARD_KERNEL_CMDLINE += ehci-hcd.park=3
 BOARD_KERNEL_CMDLINE += service_locator.enable=1
@@ -55,6 +55,10 @@ BOARD_KERNEL_CMDLINE += loop.hw_queue_depth=31
 BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a600000.dwc3 swiotlb=1
 BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc
 BOARD_KERNEL_CMDLINE += cgroup_disable=pressure
+# DEBUG (boot-hang bringup): run SELinux permissive so a single denial can't
+# silently wedge second-stage init, and so the /dev/kmsg->/metadata drainer
+# isn't blocked from writing once policy loads. Remove once booting.
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 
 #BOARD_KERNEL_CMDLINE += video=vfb:640x400,bpp=32,memsize=3072000 service_locator.enable=1 earlycon=msm_geni_serial,0x880000
 
@@ -201,6 +205,7 @@ AUDIO_FEATURE_ENABLED_CS35L41_CALIBRATION_TOOL := true
 # Vendor Interface Manifest
 DEVICE_MANIFEST_FILE := device/google/sunfish/manifest.xml
 DEVICE_MATRIX_FILE := device/google/sunfish/compatibility_matrix.xml
+BOARD_SKIP_OTA_COMPATIBILITY_CHECK := true
 # Install product specific framework compatibility matrix
 # (TODO: b/169535506) This includes the FCM for system_ext and product partition.
 # It must be split into the FCM of each partition.

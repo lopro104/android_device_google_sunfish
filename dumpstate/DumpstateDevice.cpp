@@ -299,8 +299,6 @@ static void *dumpModemThread(void *data)
     copyFile(diagPoweronLogPath, modemLogAllDir + "/" + basename(diagPoweronLogPath.c_str()));
 
     if (!PropertiesHelper::IsUserBuild()) {
-        char cmd[256] = { 0 };
-
         android::base::SetProperty(MODEM_EFS_DUMP_PROPERTY, "true");
 
         const std::string tcpdumpLogDir = "/data/vendor/tcpdump_logger/logs";

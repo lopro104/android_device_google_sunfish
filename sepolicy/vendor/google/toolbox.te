@@ -1,2 +1,3 @@
-allow toolbox per_boot_file:dir create_dir_perms;
-allow toolbox per_boot_file:file create_file_perms;
+# per_boot_file access moved to platform policy in Android 17 —
+# AOSP now provides the toolbox per_boot_file rules in
+# system/sepolicy/private/toolbox.te. Intentionally empty.

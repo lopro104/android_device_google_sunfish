@@ -7,9 +7,21 @@
 # Kernel
 BOARD_KERNEL_IMAGE_NAME := Image.lz4
 TARGET_COMPILE_WITH_MSM_KERNEL := true
-TARGET_KERNEL_CONFIG := sunfish_defconfig
-TARGET_KERNEL_SOURCE := kernel/google/msm-4.14
+
+# clang can't build 4.14 anymore 😢 sad day for ALL of us
+TARGET_KERNEL_CLANG_VERSION := r563880c
+
 TARGET_NEEDS_DTBOIMAGE := true
+
+TARGET_KERNEL_ADDITIONAL_FLAGS := CROSS_COMPILE=aarch64-linux-gnu-
+TARGET_KERNEL_ADDITIONAL_FLAGS += CROSS_COMPILE_ARM32=$(abspath prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androidkernel-)
+
+TARGET_KERNEL_SOURCE := kernel/google/msm-4.14
+TARGET_KERNEL_CONFIG := sunfish_defconfig
+
+BUILD_BROKEN_SRC_DIR_IS_WRITABLE := true
+
+$(call soong_config_set_bool,libion,legacy_impl,true)
 
 # Partitions
 AB_OTA_PARTITIONS += \
