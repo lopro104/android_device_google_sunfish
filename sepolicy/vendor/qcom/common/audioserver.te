@@ -1,0 +1,4 @@
+# The QTI audio stack probes vendor-internal properties from audioserver, but
+# Treble forbids coredomain from reading vendor_default_prop
+# (neverallow in public/property.te). The lookup miss is harmless.
+dontaudit audioserver vendor_default_prop:file r_file_perms;

@@ -4,3 +4,5 @@ dontaudit toolbox virtualizationservice_data_file:dir getattr;
 dontaudit toolbox toolbox:capability dac_read_search;
 dontaudit toolbox toolbox:capability dac_override;
 dontaudit toolbox toolbox:capability fowner;
+
+dontaudit toolbox adb_data_file:dir search;

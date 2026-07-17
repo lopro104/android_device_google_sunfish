@@ -1,0 +1,4 @@
+# AOSP already dontaudits this, but only the "read" permission; sunfish labels
+# ro.boot.hardware.platform with a vendor type, so the lookup also trips
+# open/getattr/map. It falls back to the ro.boot properties either way.
+dontaudit kcmdlinectrl vendor_property_type:file r_file_perms;

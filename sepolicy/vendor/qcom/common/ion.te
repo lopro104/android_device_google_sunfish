@@ -1,0 +1,10 @@
+# The sm7150 kernel still exposes the legacy ION allocator at /dev/ion, but
+# platform policy dropped both the /dev/ion file_contexts entry and the blanket
+# "allow domain ion_device:chr_file r_file_perms" that used to live in
+# public/domain.te when ION was deprecated in favour of dmabuf heaps.
+#
+# Gralloc, the media stack, every QTI HAL and any app that maps a graphic
+# buffer allocates through it, so restore the grant rather than enumerating the
+# ~20 domains that hit it. ion_device is mlstrustedobject, which is what made
+# the original platform rule safe for app domains.
+allow domain ion_device:chr_file r_file_perms;

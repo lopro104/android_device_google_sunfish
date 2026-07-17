@@ -1,0 +1,4 @@
+# Every app's FinalizerDaemon calls getopt() on /dev/socket/usap_pool_primary
+# while tearing the socket down. Apps never need this access, so denying it is
+# correct; it just floods the log. Silence it rather than widen policy.
+dontaudit appdomain zygote:unix_stream_socket getopt;

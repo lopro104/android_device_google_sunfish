@@ -5,3 +5,5 @@ get_prop(dataservice_app, cnd_vendor_prop)
 binder_call(dataservice_app, hal_rcsservice)
 
 allow dataservice_app hal_imsrcsd_hwservice:hwservice_manager find;
+
+dontaudit dataservice_app vendor_default_prop:file r_file_perms;

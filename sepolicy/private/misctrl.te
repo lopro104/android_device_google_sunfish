@@ -1,0 +1,3 @@
+# Same as kcmdlinectrl: AOSP's dontaudit only covers "read", but the lookup of
+# sunfish's vendor-typed ro.boot.hardware.platform also trips open/getattr/map.
+dontaudit misctrl vendor_property_type:file r_file_perms;

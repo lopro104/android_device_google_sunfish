@@ -42,6 +42,7 @@ allow location hal_gnss_qti:unix_dgram_socket sendto;
 
 allow location wifihal_socket:dir search;
 unix_socket_send(location, wifihal, hal_wifi_ext);
+unix_socket_send(location, wifihal, hal_wifi_default);
 
 get_prop(location, hwservicemanager_prop)
 binder_call(location, hwservicemanager)

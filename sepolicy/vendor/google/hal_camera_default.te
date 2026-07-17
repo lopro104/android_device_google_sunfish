@@ -43,8 +43,11 @@ userdebug_or_eng(`
 # For camera hal to talk with GPU and dontaudit unnecessary files in /sys
 hal_client_domain(hal_camera_default, hal_configstore)
 allow hal_camera_default self:qipcrtr_socket create_socket_perms_no_ioctl;
-dontaudit hal_camera_default sysfs_msm_subsys:dir search;
+r_dir_file(hal_camera_default, sysfs_msm_subsys)
 dontaudit hal_camera_default sysfs_esoc:dir search;
+
+
+dontaudit hal_camera_default property_type:file r_file_perms;
 
 # For camera hal to communicate with with power HAL
 hal_client_domain(hal_camera_default, hal_power)

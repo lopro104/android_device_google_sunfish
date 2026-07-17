@@ -1,0 +1,8 @@
+# com.google.android.pixelsystemservice probes Pixel services that sunfish does
+# not register. IPowerStats and ISecureTimestamp are absent on this device, so
+# an allow would not help - the lookup would simply fail as "not found" instead.
+# fwk_vibrator_control_service does exist, but a priv_app has no business
+# finding it, so the denial is correct there too.
+dontaudit priv_app_36 default_android_service:service_manager find;
+dontaudit priv_app_36 hal_power_stats_service:service_manager find;
+dontaudit priv_app_36 fwk_vibrator_control_service:service_manager find;

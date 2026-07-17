@@ -1,0 +1,3 @@
+# It syncs persist.device_config.storage_native_boot.smart_idle_maint_enabled,
+# which platform policy only grants to system_server.
+set_prop(flags_health_check, smart_idle_maint_enabled_prop)

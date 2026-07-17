@@ -13,3 +13,7 @@ allow thermal-engine self:netlink_kobject_uevent_socket create_socket_perms_no_i
 # for modem throttling
 allow thermal-engine self:qipcrtr_socket create_socket_perms_no_ioctl;
 
+
+allow thermal-engine socket_device:dir w_dir_perms;
+allow thermal-engine socket_device:sock_file create_file_perms;
+
