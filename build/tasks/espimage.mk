@@ -16,8 +16,10 @@ ESP_OUT_DIR := $(TARGET_OUT_INTERMEDIATES)/ESP
 
 INSTALLED_SUNFISH_ESPIMAGE_TARGET_INCLUDE_FILES := \
     $(PRODUCT_OUT)/boot.img \
-    $(PRODUCT_OUT)/recovery.img \
-    $(PRODUCT_OUT)/vendor_boot.img
+    $(PRODUCT_OUT)/recovery.img
+# vendor_boot.img intentionally omitted: this device uses boot header v2
+# (direct-ABL), which has no vendor_boot image (introduced in header v3), so no
+# rule builds it. See BoardConfig.mk "Direct-ABL boot (header v2)" notes.
 
 INSTALLED_SUNFISH_ESPIMAGE_TARGET_DEPS := \
     $(GRUB_BOOT_EFI_PREBUILT) \

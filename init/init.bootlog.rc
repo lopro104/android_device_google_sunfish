@@ -1,0 +1,36 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+# Boot-crash log capture for the sunfish_mainline bringup.
+#
+# The direct-ABL boot.img path gives us no serial console, no pstore/ramoops
+# and no usable USB in early boot, so a second-stage crash (currently apexd
+# "cannot decompress apex") reboots the device with nothing recoverable.
+#
+# This service snapshots the ENTIRE kernel ring buffer (dmesg pulls the whole
+# buffer every iteration, so it always contains first-stage + apexd history
+# even though the service itself starts in second-stage) plus all logcat
+# buffers to the /metadata partition, fsync'ing after each write. Whatever the
+# last completed sync captured survives the reboot, so the messages leading up
+# to the crash are readable afterwards from fastbootd/recovery:
+#     adb shell cat /metadata/bootlog/kmsg.txt
+#     adb shell cat /metadata/bootlog/logcat.txt
+#
+# /metadata is first_stage_mount (already mounted before second-stage init) and
+# selinux is permissive on this port, so the writes just work. Remove this rc
+# (and its PRODUCT_COPY_FILES line in device.mk) once boot is healthy.
+
+service bootlog /system/bin/sh -c 'mkdir -p /metadata/bootlog; n=0; while true; do dmesg > /metadata/bootlog/kmsg.txt 2>/dev/null; sync /metadata/bootlog/kmsg.txt 2>/dev/null; logcat -d -b all > /metadata/bootlog/logcat.txt 2>/dev/null; sync /metadata/bootlog/logcat.txt 2>/dev/null; echo $n $(cat /proc/uptime) > /metadata/bootlog/heartbeat.txt 2>/dev/null; sync /metadata/bootlog/heartbeat.txt 2>/dev/null; n=$((n+1)); sleep 0.2; done'
+    user root
+    group root system log
+    seclabel u:r:init:s0
+    oneshot
+
+# Fire as early as second-stage init exposes a trigger. Service starts run on
+# any trigger regardless of class, so this launches well before apexd activates
+# (post-fs-data / late-init), guaranteeing the ring buffer is being flushed to
+# /metadata before the decompress failure can reboot us.
+on early-init
+    mkdir /metadata/bootlog 0771 root system
+    start bootlog

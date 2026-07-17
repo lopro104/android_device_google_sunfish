@@ -40,8 +40,12 @@ BOARD_KERNEL_CMDLINE += \
 # Bootloader
 BOARD_BOOT_HEADER_VERSION := 2
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-# Explicit sunfish DTB — ABL needs exactly this one, not a concatenated blob
-BOARD_MKBOOTIMG_ARGS += --dtb $(PRODUCT_OUT)/obj/ESP/dtb/qcom/sm7150-google-sunfish.dtb
+# Explicit sunfish DTB — ABL needs exactly this one, not a concatenated blob.
+# Point at the KERNEL_OBJ output (produced by the kernel build, a boot.img
+# prerequisite) rather than obj/ESP/dtb, which is only populated inside the
+# esp.img task — and esp.img depends on boot.img, so on a clean build that path
+# doesn't exist yet when boot.img is assembled. Same .dtb, available earlier.
+BOARD_MKBOOTIMG_ARGS += --dtb $(PRODUCT_OUT)/obj/KERNEL_OBJ/arch/arm64/boot/dts/qcom/sm7150-google-sunfish.dtb
 # No init_boot partition — generic ramdisk lives in boot.img
 BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := false
 
