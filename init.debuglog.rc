@@ -1,24 +1,19 @@
-# Boot debugging: capture a full logcat to /metadata/log.txt
+Boot debugging: capture a full logcat to /metadata/log.txt
 # /metadata survives a factory reset and is mounted before /data, so this
 # still gets a log when the device never reaches a booted state.
 #
-# NOT wired into device.mk -- to enable, add this line to PRODUCT_COPY_FILES:
-#   $(LOCAL_PATH)/init.debuglog.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.debuglog.rc \
-# and remember to remove it again afterwards.
+# The service is a no-op unless /metadata/start.txt exists, so this can stay
+# in the build permanently and be toggled from recovery:
+#   adb shell 'mount /metadata; touch /metadata/start.txt'
+# See debuglog.sh for details.
 
 on early-init
     mkdir /metadata 0771 root system
     # normally already mounted by first_stage_mount; harmless no-op if so
     mount ext4 /dev/block/by-name/metadata /metadata noatime nosuid nodev
-    rm /metadata/log.txt
-    rm /metadata/log.txt.1
-    rm /metadata/log.txt.2
     start debuglog
 
-# /metadata is only 10MB and update_engine needs room in /metadata/ota for OTA
-# snapshot state -- an unbounded log fills it and makes sideload fail with
-# kInstallDeviceOpenError. -r/-n cap total output at ~3MB across 3 files.
-service debuglog /system/bin/logcat -b all -v threadtime -f /metadata/log.txt -r 1024 -n 2
+service debuglog /vendor/bin/debuglog.sh
     class core
     user root
     group root system log
