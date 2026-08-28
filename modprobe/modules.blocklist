@@ -1,1 +1,4 @@
 blocklist v4l2-fwnode.ko
+# BRINGUP: keep the touch driver from auto-loading so slot A boots; we insmod
+# it by hand (as root, userdebug) with dmesg attached to capture the hang.
+blocklist stmfts.ko

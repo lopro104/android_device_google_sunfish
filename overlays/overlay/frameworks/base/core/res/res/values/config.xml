@@ -21,4 +21,25 @@
     <!-- Whether a software navigation bar should be shown. NOTE: in the future this may be
          autodetected from the Configuration. -->
     <bool name="config_showNavigationBar">true</bool>
+
+    <!-- Top-left punch-hole camera cutout. On mainline the composer doesn't
+         report a physical cutout, so the framework leaves the status bar at the
+         28dp minimum and content collides with the camera. Declaring it here
+         makes the framework reserve the camera's height for the status bar and
+         fill it black. Values from stock device/google/sunfish. -->
+    <bool name="config_fillMainBuiltInDisplayCutout">true</bool>
+
+    <string translatable="false" name="config_mainBuiltInDisplayCutout">
+        M 40,83 a 42.75,42.75 0 1 0 85.5,0 42.75,42.75 0 1 0 -85.5,0 Z
+        @left
+    </string>
+
+    <string translatable="false" name="config_mainBuiltInDisplayCutoutRectApproximation">
+        M 0.0,0.0
+        h 136
+        v 136
+        h -136
+        Z
+        @left
+    </string>
 </resources>

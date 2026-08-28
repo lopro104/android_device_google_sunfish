@@ -28,6 +28,10 @@ BOARD_KERNEL_CMDLINE := \
 BOARD_BOOTCONFIG += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += audit=0
 
+# BRINGUP: keep the stmfts touch module from auto-loading so slot A boots
+# instead of hanging when the driver binds; we load it by hand for testing.
+BOARD_KERNEL_CMDLINE += modprobe.blacklist=stmfts
+
 # Direct-ABL boot (header v2) has no bootconfig channel — vendor_boot (and its
 # bootconfig section) is only loaded on the GRUB/ESP path. Mirror the
 # androidboot.* params onto the kernel cmdline so init sees them either way;

@@ -96,6 +96,14 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/init/init.bootlog.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.bootlog.rc
 
+# BRINGUP: late hand-load of the touch driver to capture its hang (see rc).
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/init/init.touchtest.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.touchtest.rc
+
+# Point the (glodroid) FF vibrator HAL at the TI DRV2624 haptics on i2c-9.
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.vendor.vibrator.hal.input_path=/sys/devices/platform/soc@0/ac0000.geniqup/a8c000.i2c/i2c-9/9-005a/input
+
 $(call soong_config_set,libinit,vendor_init_lib,//$(DEVICE_PATH):init_sunfish_mainline)
 
 PRODUCT_PACKAGES += \

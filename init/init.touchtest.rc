@@ -1,0 +1,13 @@
+# The stmfts touch driver hangs if it binds during early boot (it probes before
+# its i2c/regulator dependencies are ready and wedges the CPU -> watchdog).
+# So it is blocklisted from ueventd auto-load (see modprobe/modules.blocklist)
+# and loaded here instead, once userspace is up, where it binds cleanly.
+service load-stmfts /system/bin/insmod /vendor_dlkm/lib/modules/stmfts.ko
+    user root
+    group root system
+    disabled
+    oneshot
+    seclabel u:r:init:s0
+
+on property:sys.boot_completed=1
+    start load-stmfts
