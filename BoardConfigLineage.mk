@@ -6,7 +6,6 @@
 
 # Kernel
 BOARD_KERNEL_IMAGE_NAME := Image.lz4
-TARGET_COMPILE_WITH_MSM_KERNEL := true
 
 # clang can't build 4.14 anymore 😢 sad day for ALL of us
 TARGET_KERNEL_CLANG_VERSION := r563880c
