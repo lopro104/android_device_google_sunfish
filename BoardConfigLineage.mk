@@ -23,7 +23,10 @@ BOARD_SEPOLICY_DIRS += device/google/sunfish/sepolicy-lineage/dynamic
 BOARD_SEPOLICY_DIRS += device/google/sunfish/sepolicy-lineage/vendor
 
 # Verified Boot
-BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+BOARD_AVB_KEY_PATH := avb.pem
+BOARD_AVB_ALGORITHM := SHA256_RSA4096
+BOARD_AVB_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 1
 
 include vendor/google/sunfish/BoardConfigVendor.mk
 # This tells the build to completely ignore the check that just failed
