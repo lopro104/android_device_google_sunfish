@@ -1,4 +1,4 @@
-Boot debugging: capture a full logcat to /metadata/log.txt
+# Boot debugging: capture a full logcat to /metadata/log.txt
 # /metadata survives a factory reset and is mounted before /data, so this
 # still gets a log when the device never reaches a booted state.
 #
