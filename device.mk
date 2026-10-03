@@ -166,8 +166,3 @@ PRODUCT_SOONG_NAMESPACES += \
 #   tree-wide (global-namespace) qacs/ambientdatacapture interface resolves its
 #   import during soong analysis (downstream sunfish does the same). Not installed
 #   into the mainline image; only needed to satisfy the dangling import.
-
-# BRINGUP: trust the build host's adb key (touch is broken, so the RSA
-# "Allow USB debugging" prompt can't be answered). Installed as
-# /product/etc/security/adb_keys, which /adb_keys symlinks to.
-PRODUCT_ADB_KEYS := $(DEVICE_PATH)/bringup-adbkey.pub
