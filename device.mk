@@ -10,10 +10,20 @@ DEVICE_PATH := device/google/sunfish_mainline
 TARGET_QCOM_SOC := sm7150-ab
 ## TODO: Bringup the corresponding hardware and remove the following definitions
 TARGET_SUPPORTS_SUSPEND := false
+## A/B: qcom-common only picks the boot HAL when it sees AB_OTA_UPDATER, but
+## that is set in BoardConfig.mk, which is read after this product config.
+TARGET_BOOT_HAL := qcom-caf-aidl
 include device/mainline/qcom-common/optional/options.mk
 
 # Inherit from mainline/qcom-common
 $(call inherit-product, device/mainline/qcom-common/mainline_qcom-common.mk)
+
+# A/B: update_verifier marks the slot successful so ABL stops counting
+# down boot attempts; update_engine handles A/B OTAs.
+PRODUCT_PACKAGES += \
+    update_engine \
+    update_engine_sideload \
+    update_verifier
 
 # AAPT
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
@@ -90,11 +100,21 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/fstab/fstab.sunfish:$(TARGET_COPY_OUT_RAMDISK)/first_stage_ramdisk/fstab.sunfish \
     $(DEVICE_PATH)/fstab/fstab.sunfish:$(TARGET_COPY_OUT_RAMDISK)/first_stage_ramdisk/fstab.sm7150
 
+# With BOARD_USES_RECOVERY_AS_BOOT the boot ramdisk is the recovery ramdisk,
+# so the copies above never reach boot.img; mirror them there (stock sunfish
+# installs its fstab to $(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk).
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/fstab/fstab.sunfish:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.sunfish \
+    $(DEVICE_PATH)/fstab/fstab.sunfish:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.sm7150 \
+    $(DEVICE_PATH)/fstab/fstab.sunfish:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/system/etc/fstab.sunfish \
+    $(DEVICE_PATH)/fstab/fstab.sunfish:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/system/etc/fstab.sm7150
+
 # Boot-crash log capture -> /metadata (bringup only; see init/init.bootlog.rc).
 # Installed into the vendor image so a targeted `m vendorimage` + reflash of
 # vendor_a is enough to iterate — no full super rebuild.
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/init/init.bootlog.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.bootlog.rc
+    $(DEVICE_PATH)/init.debuglog.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.debuglog.rc \
+    $(DEVICE_PATH)/debuglog.sh:$(TARGET_COPY_OUT_VENDOR)/bin/debuglog.sh
 
 # BRINGUP: late hand-load of the touch driver to capture its hang (see rc).
 PRODUCT_COPY_FILES += \
@@ -146,3 +166,8 @@ PRODUCT_SOONG_NAMESPACES += \
 #   tree-wide (global-namespace) qacs/ambientdatacapture interface resolves its
 #   import during soong analysis (downstream sunfish does the same). Not installed
 #   into the mainline image; only needed to satisfy the dangling import.
+
+# BRINGUP: trust the build host's adb key (touch is broken, so the RSA
+# "Allow USB debugging" prompt can't be answered). Installed as
+# /product/etc/security/adb_keys, which /adb_keys symlinks to.
+PRODUCT_ADB_KEYS := $(DEVICE_PATH)/bringup-adbkey.pub

@@ -2,3 +2,8 @@
 vendor.remoteproc.adsp.firmware=adsp.mdt
 vendor.remoteproc.cdsp.firmware=cdsp.mdt
 vendor.remoteproc.modem.firmware=modem.mdt
+
+# BRINGUP: touch is broken, so adb has to come up without the
+# Developer-options toggle or the RSA "Allow" prompt.
+persist.sys.usb.config=adb
+ro.adb.secure=0

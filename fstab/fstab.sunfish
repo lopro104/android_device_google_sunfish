@@ -14,13 +14,26 @@
 /dev/block/by-name/modem_a /vendor/firmware_mnt vfat ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_mnt_file:s0 defaults
 
 # Logical partitions
-product /product ext4 noatime,ro logical,first_stage_mount
-system /system ext4 noatime,ro logical,first_stage_mount
-system_dlkm /system_dlkm ext4 noatime,ro logical,first_stage_mount
-system_ext /system_ext ext4 noatime,ro logical,first_stage_mount
-odm /odm ext4 noatime,ro logical,first_stage_mount
-vendor /vendor ext4 noatime,ro logical,first_stage_mount
-vendor_dlkm /vendor_dlkm ext4 noatime,ro logical,first_stage_mount
+product /product erofs noatime,ro slotselect,logical,first_stage_mount
+product /product ext4 noatime,ro slotselect,logical,first_stage_mount
+system /system erofs noatime,ro slotselect,logical,first_stage_mount
+system /system ext4 noatime,ro slotselect,logical,first_stage_mount
+system_dlkm /system_dlkm erofs noatime,ro slotselect,logical,first_stage_mount
+system_dlkm /system_dlkm ext4 noatime,ro slotselect,logical,first_stage_mount
+system_ext /system_ext erofs noatime,ro slotselect,logical,first_stage_mount
+system_ext /system_ext ext4 noatime,ro slotselect,logical,first_stage_mount
+odm /odm erofs noatime,ro slotselect,logical,first_stage_mount
+odm /odm ext4 noatime,ro slotselect,logical,first_stage_mount
+vendor /vendor erofs noatime,ro slotselect,logical,first_stage_mount
+vendor /vendor ext4 noatime,ro slotselect,logical,first_stage_mount
+vendor_dlkm /vendor_dlkm erofs noatime,ro slotselect,logical,first_stage_mount
+vendor_dlkm /vendor_dlkm ext4 noatime,ro slotselect,logical,first_stage_mount
+
+# zram swap, as on stock sunfish (swapon_all in init.sunfish.rc), except
+# max_comp_streams: the sysfs knob is gone in newer kernels (zram is always
+# multi-stream). fs_mgr writes it whenever the value is >= 0 (default 0) and
+# fails swapon_all if it can't, so -1 makes it skip the write.
+/dev/block/zram0 none swap defaults zramsize=2147483648,max_comp_streams=-1,zram_backingdev_size=512M
 
 # Metadata
 /dev/block/by-name/metadata /metadata ext4 nodev,noatime,nosuid,discard,data=journal,commit=1 check,formattable,first_stage_mount,metadata_csum

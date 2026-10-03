@@ -5,14 +5,29 @@
 
 USES_DEVICE_GOOGLE_SUNFISH_MAINLINE := true
 
+# 16K pages (Cortex-A76/A55 support the 16 KB granule). Must be set before
+# the common BoardConfig, which picks 16K EROFS/F2FS block sizes from it.
+TARGET_BOOTS_16K := true
+
 # Inherit from mainline/qcom-common
 include device/mainline/qcom-common/BoardConfigMainlineQcomCommon.mk
 
 # A/B
-# Note: sunfish is an A/B device, but this port only uses slot A and
-# handles boot/recovery images through the ESP, like the other
-# sm7150-mainline targets.
-AB_OTA_UPDATER := false
+# sunfish is a real A/B device. ABL keeps slot state in GPT attributes and
+# counts down boot attempts until something marks the slot successful, so
+# this needs the qcom bootctrl HAL (TARGET_BOOT_HAL from qcom-common) plus
+# update_verifier, which come with AB_OTA_UPDATER. Also gives super_empty
+# slot-suffixed partition names, matching the slotselect fstab.
+AB_OTA_UPDATER := true
+AB_OTA_PARTITIONS := \
+    boot \
+    odm \
+    product \
+    system \
+    system_dlkm \
+    system_ext \
+    vendor \
+    vendor_dlkm
 
 # Boot parameters
 BOARD_BOOTCONFIG := \
@@ -22,11 +37,13 @@ BOARD_BOOTCONFIG := \
 
 BOARD_KERNEL_CMDLINE := \
     $(MAINLINE_COMMON_KERNEL_PARAMS) \
-    $(MAINLINE_QCOM_KERNEL_PARAMS) \
-    console=tty0
+    $(MAINLINE_QCOM_KERNEL_PARAMS)
 
 BOARD_BOOTCONFIG += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += audit=0
+# BRINGUP: kernel log on screen while bringing up 16K/EROFS/A-B boots.
+# For a clean boot screen, drop this and add logo.nologo.
+BOARD_KERNEL_CMDLINE += console=tty0
 
 # BRINGUP: keep the stmfts touch module from auto-loading so slot A boots
 # instead of hanging when the driver binds; we load it by hand for testing.
@@ -43,6 +60,11 @@ BOARD_KERNEL_CMDLINE += \
 
 # Bootloader
 BOARD_BOOT_HEADER_VERSION := 2
+
+# Recovery (and fastbootd) lives in the boot ramdisk, as on stock sunfish:
+# there is no recovery partition. ABL passes androidboot.force_normal_boot=1
+# for a normal boot.
+BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 # Explicit sunfish DTB — ABL needs exactly this one, not a concatenated blob.
 # Point at the KERNEL_OBJ output (produced by the kernel build, a boot.img
@@ -90,6 +112,8 @@ TARGET_USERIMAGES_USE_EXT4 := true
 # Kernel
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 TARGET_KERNEL_SOURCE := kernel/mainline/sm7150-mainline
+# ACK's Kconfig sources $(KCONFIG_EXT_PREFIX)Kconfig.ext; give it an empty one
+TARGET_KERNEL_ADDITIONAL_FLAGS += KCONFIG_EXT_PREFIX=$(abspath device/google/sunfish_mainline/kconfig-ext)/
 
 TARGET_KERNEL_CONFIG := \
     defconfig \
@@ -102,6 +126,7 @@ TARGET_KERNEL_CONFIG_EXT := \
     kernel/configs/b/android-6.12/android-base.config \
     kernel/mainline/configs/fragments/android-base-conditional/CONFIG_ARM64-y.config \
     kernel/mainline/configs/fragments/common.config \
+    kernel/mainline/configs/fragments/y/arm64/pagesize-16k.config \
     kernel/mainline/configs/fragments/y/fbcon.config \
     kernel/mainline/configs/fragments/n/disable-clang-hardening-features.config \
     kernel/mainline/configs/fragments/n/faster-build-time.config \
@@ -111,10 +136,14 @@ TARGET_KERNEL_CONFIG_EXT := \
 BOARD_VENDOR_KERNEL_MODULES_LOAD := \
     $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.load.basic))
 
+# Recovery also loads stmfts (touch): there is no init.touchtest.rc there,
+# and the panel-follower driver is safe to bind early.
 BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD := \
-    $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.load.basic))
+    $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.load.basic)) \
+    stmfts.ko
 RECOVERY_KERNEL_MODULES := \
-    $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.load.basic))
+    $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.load.basic)) \
+    stmfts.ko
 
 TARGET_AUTO_COLLECT_KERNEL_MODULE_DEPS := true
 
@@ -141,8 +170,7 @@ $(foreach p, $(DLKM_PARTITIONS), \
     $(eval BOARD_USES_$(call to-upper, $(p))IMAGE := true))
 
 $(foreach p, $(call to-upper, $(ALL_PARTITIONS)), \
-    $(eval BOARD_$(p)IMAGE_EXTFS_INODE_COUNT := -1) \
-    $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := ext4) \
+    $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := erofs) \
     $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := 67108864) \
     $(eval TARGET_COPY_OUT_$(p) := $(call to-lower, $(p))))
 
@@ -152,7 +180,11 @@ BOARD_SUPER_PARTITION_METADATA_DEVICE := super
 BOARD_SUPER_PARTITION_SUPER_DEVICE_SIZE := 9755951104
 BOARD_SUPER_PARTITION_SIZE := $(BOARD_SUPER_PARTITION_SUPER_DEVICE_SIZE)
 
-BOARD_SUNFISH_MAINLINE_DYNPART_SIZE := $(shell expr $(BOARD_SUPER_PARTITION_SIZE) - 4194304 )
+# A/B (not virtual A/B): both slots' groups must fit in super at once
+BOARD_SUNFISH_MAINLINE_DYNPART_SIZE := $(shell expr \( $(BOARD_SUPER_PARTITION_SIZE) - 4194304 \) / 2 )
+
+# EROFS, as on stock sunfish
+BOARD_EROFS_PCLUSTER_SIZE := 262144
 
 # Properties
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/properties/vendor.prop

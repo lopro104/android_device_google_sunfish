@@ -9,5 +9,13 @@ service load-stmfts /system/bin/insmod /vendor_dlkm/lib/modules/stmfts.ko
     oneshot
     seclabel u:r:init:s0
 
-on property:sys.boot_completed=1
+# The panel-follower driver (7.1-port) powers the chip from the panel's
+# prepare hook instead of probe, which fixed the wedge. Load it before the
+# framework starts: EventHub gives up on an input device whose hotplug open
+# fails, so it has to be present when EventHub first scans /dev/input.
+# Can still be triggered by hand:  adb shell setprop debug.touchtest 1
+on post-fs-data
+    start load-stmfts
+
+on property:debug.touchtest=1
     start load-stmfts
