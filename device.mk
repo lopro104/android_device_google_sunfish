@@ -25,6 +25,22 @@ PRODUCT_PACKAGES += \
     update_engine_sideload \
     update_verifier
 
+# NFC (ST21NFCD via the st21nfc char driver, as on stock sunfish).
+# The eSE (secure element) parts are left out: no driver for it yet.
+PRODUCT_PACKAGES += \
+    android.hardware.nfc-service.st \
+    NfcOverlaySunfish
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.nfc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.nfc.xml \
+    frameworks/native/data/etc/android.hardware.nfc.hce.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.nfc.hce.xml \
+    frameworks/native/data/etc/android.hardware.nfc.hcef.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.nfc.hcef.xml \
+    frameworks/native/data/etc/android.hardware.nfc.uicc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.nfc.uicc.xml \
+    $(DEVICE_PATH)/nfc/libnfc-hal-st.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-hal-st.conf \
+    $(DEVICE_PATH)/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_PRODUCT)/etc/libnfc-nci.conf \
+    vendor/google/sunfish/proprietary/vendor/firmware/st54j_fw.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/st54j_fw.bin \
+    vendor/google/sunfish/proprietary/vendor/firmware/st54j_conf.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/st54j_conf.bin
+
 # AAPT
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
