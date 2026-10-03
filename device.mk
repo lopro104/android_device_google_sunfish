@@ -44,6 +44,15 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,vendor/google/sunfish/proprietary/vendor/etc/sensors/config/,$(TARGET_COPY_OUT_VENDOR)/etc/hexagonrpcd-root/sensors/config/) \
     vendor/google/sunfish/proprietary/vendor/etc/sensors/sns_reg_config:$(TARGET_COPY_OUT_VENDOR)/etc/hexagonrpcd-root/sensors/sns_reg.conf
 
+# DSP-side libraries the ADSP/CDSP load from Android over FastRPC (CHRE
+# drivers, sensor algorithms, audio modules). sunfish has no dsp partition;
+# stock ships these in the vendor image. hexagonrpcd-root/dsp -> /vendor/dsp.
+# Without them the ADSP sensor process dies in CHRE init (sar.cc chre_utils
+# fatal) and takes the whole ADSP down with it.
+PRODUCT_COPY_FILES += \
+    $(call find-copy-subdir-files,*,vendor/google/sunfish/proprietary/vendor/dsp/,$(TARGET_COPY_OUT_VENDOR)/dsp/) \
+    $(call find-copy-subdir-files,*,vendor/google/sunfish/proprietary/vendor/etc/chre/,$(TARGET_COPY_OUT_VENDOR)/etc/chre/)
+
 # Dynamic partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
