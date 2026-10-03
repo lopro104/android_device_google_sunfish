@@ -5,10 +5,6 @@
 
 USES_DEVICE_GOOGLE_SUNFISH_MAINLINE := true
 
-# 16K pages (Cortex-A76/A55 support the 16 KB granule). Must be set before
-# the common BoardConfig, which picks 16K EROFS/F2FS block sizes from it.
-TARGET_BOOTS_16K := true
-
 # Inherit from mainline/qcom-common
 include device/mainline/qcom-common/BoardConfigMainlineQcomCommon.mk
 
@@ -126,7 +122,6 @@ TARGET_KERNEL_CONFIG_EXT := \
     kernel/configs/b/android-6.12/android-base.config \
     kernel/mainline/configs/fragments/android-base-conditional/CONFIG_ARM64-y.config \
     kernel/mainline/configs/fragments/common.config \
-    kernel/mainline/configs/fragments/y/arm64/pagesize-16k.config \
     kernel/mainline/configs/fragments/y/fbcon.config \
     kernel/mainline/configs/fragments/n/disable-clang-hardening-features.config \
     kernel/mainline/configs/fragments/n/faster-build-time.config \
