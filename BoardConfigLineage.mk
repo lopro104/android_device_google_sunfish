@@ -18,7 +18,8 @@ TARGET_KERNEL_ADDITIONAL_FLAGS += CROSS_COMPILE_ARM32=$(abspath prebuilts/gcc/li
 TARGET_KERNEL_SOURCE := kernel/google/msm-4.14
 TARGET_KERNEL_CONFIG := sunfish_defconfig
 
-BUILD_BROKEN_SRC_DIR_IS_WRITABLE := true
+# Conflicts with vendor/lineage BUILD_BROKEN_SRC_DIR_RW_ALLOWLIST (fatal in soong sandbox)
+#BUILD_BROKEN_SRC_DIR_IS_WRITABLE := true
 
 $(call soong_config_set_bool,libion,legacy_impl,true)
 
