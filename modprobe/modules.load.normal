@@ -61,4 +61,5 @@ videobuf2_v4l2
 videodev
 slg51000_regulator
 imx363
+imx355
 qcom_camss
