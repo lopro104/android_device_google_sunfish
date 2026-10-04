@@ -19,12 +19,12 @@ on late-fs
     # Mount RW partitions which need run fsck
     mount_all --late
 
-# BRINGUP: once hexagonrpcd feeds it, the ADSP's sensor process dies with
-# "EF:sensor_process ... sar.cc:27: chre_utils fatal", and the ADSP recovery
-# that follows hard-resets the whole phone (~40-110 s after boot). Keep the
-# sensors daemon off until that is understood; sensors won't work meanwhile.
-on property:init.svc.vendor.hexagonrpcd-adsp-sensorspd=running
-    stop vendor.hexagonrpcd-adsp-sensorspd
+# Sensors PD registry (rebuilt by the DSP from /vendor/etc/sensors/config).
+# hexagonrpcd starts before /data is mounted, so restart it once it is.
+on post-fs-data
+    mkdir /data/vendor/sensors 0770 system system
+    mkdir /data/vendor/sensors/registry 0770 system system
+    restart vendor.hexagonrpcd-adsp-sensorspd
 
 # zram, as on stock sunfish (init.hardware.rc)
 on init
