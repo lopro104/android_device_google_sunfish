@@ -2,7 +2,7 @@
 /*
  * camcap: link sensor -> csiphy0 -> csid0 -> vfe0_rdi0 in /dev/media0,
  * propagate the sensor format and capture one raw frame.
- * Usage: camcap [out.raw]
+ * Usage: camcap [out.raw [sensor [csiphy]]], default imx363 on msm_csiphy0
  */
 #include <errno.h>
 #include <fcntl.h>
@@ -124,7 +124,9 @@ int main(int argc, char **argv)
 		d.id |= MEDIA_ENT_ID_FLAG_NEXT;
 	}
 
-	struct ent *sensor = find("imx363"), *phy = find("msm_csiphy0"),
+	const char *sname = argc > 2 ? argv[2] : "imx363";
+	const char *pname = argc > 3 ? argv[3] : "msm_csiphy0";
+	struct ent *sensor = find(sname), *phy = find(pname),
 		   *csid = find("msm_csid0"), *rdi = find("msm_vfe0_rdi0"),
 		   *vid = find("msm_vfe0_video0");
 	if (!sensor || !phy || !csid || !rdi || !vid) {
@@ -135,7 +137,19 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	/* sensor:0 -> csiphy0:0, csiphy0:1 -> csid0:0, csid0:1 -> rdi0:0 */
+	/* drop links a previous user left from other csiphys into csid0 */
+	for (int i = 0; i < nents; i++) {
+		if (strncmp(ents[i].name, "msm_csiphy", 10) || &ents[i] == phy)
+			continue;
+		struct media_link_desc l = { 0 };
+		l.source.entity = ents[i].id;
+		l.source.index = 1;
+		l.sink.entity = csid->id;
+		l.sink.index = 0;
+		ioctl(mfd, MEDIA_IOC_SETUP_LINK, &l);
+	}
+
+	/* sensor:0 -> csiphyN:0, csiphyN:1 -> csid0:0, csid0:1 -> rdi0:0 */
 	setup_link(mfd, sensor, 0, phy, 0);
 	setup_link(mfd, phy, 1, csid, 0);
 	setup_link(mfd, csid, 1, rdi, 0);
