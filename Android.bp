@@ -42,3 +42,11 @@ license {
     ],
     // large-scale-change unable to identify any license_text files
 }
+
+prebuilt_etc {
+    name: "libcamera_camera_hal.yaml",
+    src: "camera/camera_hal.yaml",
+    filename: "camera_hal.yaml",
+    relative_install_path: "libcamera",
+    vendor: true,
+}

@@ -13,6 +13,10 @@ TARGET_SUPPORTS_SUSPEND := false
 ## A/B: qcom-common only picks the boot HAL when it sees AB_OTA_UPDATER, but
 ## that is set in BoardConfig.mk, which is read after this product config.
 TARGET_BOOT_HAL := qcom-caf-aidl
+
+# Camera: libcamera simple pipeline + software ISP (external/libcamera-mainline)
+TARGET_CAMERA_PROVIDER_HAL := libcamera
+$(call soong_config_set,libcamera,ipa,simple)
 include device/mainline/qcom-common/optional/options.mk
 
 # Inherit from mainline/qcom-common
