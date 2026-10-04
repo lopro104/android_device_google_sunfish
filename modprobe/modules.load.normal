@@ -59,3 +59,6 @@ videobuf2_common
 videobuf2_memops
 videobuf2_v4l2
 videodev
+slg51000_regulator
+imx363
+qcom_camss
