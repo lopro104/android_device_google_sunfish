@@ -1,0 +1,9 @@
+// Bring-up helper: capture one raw frame from the rear camera through CAMSS.
+// Not installed in the image. The Soong namespace hides it from `m`; build
+// with the AOSP clang against out/soong/ndk/sysroot (see commit message).
+cc_binary {
+    name: "camcap",
+    srcs: ["camcap.c"],
+    cflags: ["-Wall", "-Werror"],
+    installable: false,
+}
