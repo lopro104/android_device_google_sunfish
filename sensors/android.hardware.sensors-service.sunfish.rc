@@ -1,0 +1,5 @@
+service vendor.sensors-sunfish /vendor/bin/hw/android.hardware.sensors-service.sunfish
+    class hal
+    user system
+    group system
+    rlimit rtprio 10 10

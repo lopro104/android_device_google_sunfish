@@ -42,4 +42,52 @@
         Z
         @left
     </string>
+
+    <!-- Adaptive brightness from the TCS3701 light sensor (sensors HAL). -->
+    <bool name="config_automatic_brightness_available">true</bool>
+    <integer name="config_autoBrightnessBrighteningLightDebounce">2000</integer>
+    <integer name="config_autoBrightnessDarkeningLightDebounce">4000</integer>
+
+    <!-- Panel: 2 to 450 nits over the framework's 1-255 backlight scale (as stock). -->
+    <integer-array name="config_screenBrightnessBacklight">
+        <item>1</item>
+        <item>255</item>
+    </integer-array>
+    <array name="config_screenBrightnessNits">
+        <item>2.0</item>
+        <item>450.0</item>
+    </array>
+
+    <!-- Lux thresholds and the target nits for each band (one more than lux). -->
+    <integer-array name="config_autoBrightnessLevels">
+        <item>1</item>
+        <item>3</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>100</item>
+        <item>200</item>
+        <item>400</item>
+        <item>800</item>
+        <item>1500</item>
+        <item>3000</item>
+        <item>6000</item>
+        <item>10000</item>
+    </integer-array>
+    <array name="config_autoBrightnessDisplayValuesNits">
+        <item>4</item>
+        <item>8</item>
+        <item>14</item>
+        <item>25</item>
+        <item>40</item>
+        <item>60</item>
+        <item>85</item>
+        <item>120</item>
+        <item>170</item>
+        <item>230</item>
+        <item>300</item>
+        <item>380</item>
+        <item>430</item>
+        <item>450</item>
+    </array>
 </resources>
