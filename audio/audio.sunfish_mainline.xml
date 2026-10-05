@@ -10,6 +10,17 @@
     <mixer card="0">
         <init>
             <ctl name="SEC_TDM_RX_0 Audio Mixer MultiMedia1" val="0" />
+
+            <!--
+                Speaker protection: run the Cirrus protection firmware on
+                both amps and feed the amplifier from the DSP.
+            -->
+            <ctl name="L DSP1 Firmware" val="Protection" />
+            <ctl name="R DSP1 Firmware" val="Protection" />
+            <ctl name="L DSP1 Preload Switch" val="1" />
+            <ctl name="R DSP1 Preload Switch" val="1" />
+            <ctl name="L PCM Source" val="DSP" />
+            <ctl name="R PCM Source" val="DSP" />
         </init>
     </mixer>
 
