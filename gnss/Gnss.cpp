@@ -307,51 +307,40 @@ ScopedAStatus Gnss::getExtensionGnssConfiguration(
 
 ScopedAStatus Gnss::getExtensionGnssPowerIndication(
         std::shared_ptr<IGnssPowerIndication>* iGnssPowerIndication) {
-    ALOGD("getExtensionGnssPowerIndication");
-    if (mGnssPowerIndication == nullptr) {
-        mGnssPowerIndication = SharedRefBase::make<GnssPowerIndication>();
-    }
-
-    *iGnssPowerIndication = mGnssPowerIndication;
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iGnssPowerIndication = nullptr;
     return ScopedAStatus::ok();
 }
 
 ScopedAStatus Gnss::getExtensionGnssMeasurement(
         std::shared_ptr<IGnssMeasurementInterface>* iGnssMeasurement) {
-    ALOGD("getExtensionGnssMeasurement");
-    if (mGnssMeasurementInterface == nullptr) {
-        mGnssMeasurementInterface = SharedRefBase::make<GnssMeasurementInterface>();
-        mGnssMeasurementInterface->setGnssInterface(static_cast<std::shared_ptr<Gnss>>(this));
-    }
-    *iGnssMeasurement = mGnssMeasurementInterface;
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iGnssMeasurement = nullptr;
     return ScopedAStatus::ok();
 }
 
 ScopedAStatus Gnss::getExtensionGnssBatching(std::shared_ptr<IGnssBatching>* iGnssBatching) {
-    ALOGD("getExtensionGnssBatching");
-
-    *iGnssBatching = SharedRefBase::make<GnssBatching>();
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iGnssBatching = nullptr;
     return ScopedAStatus::ok();
 }
 
 ScopedAStatus Gnss::getExtensionGnssGeofence(std::shared_ptr<IGnssGeofence>* iGnssGeofence) {
-    ALOGD("getExtensionGnssGeofence");
-
-    *iGnssGeofence = SharedRefBase::make<GnssGeofence>();
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iGnssGeofence = nullptr;
     return ScopedAStatus::ok();
 }
 
 ScopedAStatus Gnss::getExtensionGnssNavigationMessage(
         std::shared_ptr<IGnssNavigationMessageInterface>* iGnssNavigationMessage) {
-    ALOGD("getExtensionGnssNavigationMessage");
-
-    *iGnssNavigationMessage = SharedRefBase::make<GnssNavigationMessageInterface>();
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iGnssNavigationMessage = nullptr;
     return ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus Gnss::getExtensionGnssDebug(std::shared_ptr<IGnssDebug>* iGnssDebug) {
-    ALOGD("Gnss::getExtensionGnssDebug");
-    *iGnssDebug = SharedRefBase::make<GnssDebug>();
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iGnssDebug = nullptr;
     return ndk::ScopedAStatus::ok();
 }
 
@@ -365,27 +354,23 @@ ndk::ScopedAStatus Gnss::getExtensionGnssVisibilityControl(
 
 ndk::ScopedAStatus Gnss::getExtensionGnssAntennaInfo(
         std::shared_ptr<IGnssAntennaInfo>* iGnssAntennaInfo) {
-    ALOGD("Gnss::getExtensionGnssAntennaInfo");
-
-    *iGnssAntennaInfo = SharedRefBase::make<GnssAntennaInfo>();
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iGnssAntennaInfo = nullptr;
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus Gnss::getExtensionMeasurementCorrections(
         std::shared_ptr<measurement_corrections::IMeasurementCorrectionsInterface>*
                 iMeasurementCorrections) {
-    ALOGD("Gnss::getExtensionMeasurementCorrections");
-
-    *iMeasurementCorrections =
-            SharedRefBase::make<measurement_corrections::MeasurementCorrectionsInterface>();
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iMeasurementCorrections = nullptr;
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus Gnss::getExtensionGnssAssistanceInterface(
         std::shared_ptr<gnss_assistance::IGnssAssistanceInterface>* iGnssAssistanceInterface) {
-    ALOGD("Gnss::getExtensionGnssAssistanceInterface");
-
-    *iGnssAssistanceInterface = SharedRefBase::make<gnss_assistance::GnssAssistanceInterface>();
+    // Not backed by the modem; the AOSP default implementation only returns mock data.
+    *iGnssAssistanceInterface = nullptr;
     return ndk::ScopedAStatus::ok();
 }
 
