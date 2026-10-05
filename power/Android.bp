@@ -1,0 +1,28 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_binary {
+    name: "android.hardware.power-service.sunfish",
+    defaults: ["android.hardware.power-ndk_shared"],
+    relative_install_path: "hw",
+    init_rc: ["android.hardware.power-service.sunfish.rc"],
+    vintf_fragments: ["android.hardware.power-service.sunfish.xml"],
+    vendor: true,
+    shared_libs: [
+        "android.hardware.common-V2-ndk",
+        "android.hardware.common.fmq-V1-ndk",
+        "libbase",
+        "libbinder_ndk",
+        "libcutils",
+        "libfmq",
+        "libutils",
+    ],
+    srcs: [
+        "Boost.cpp",
+        "main.cpp",
+        "Power.cpp",
+        "PowerHintSession.cpp",
+    ],
+}

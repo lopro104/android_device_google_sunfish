@@ -16,6 +16,7 @@ TARGET_BOOT_HAL := qcom-caf-aidl
 
 # Camera: libcamera simple pipeline + software ISP (external/libcamera-mainline)
 TARGET_CAMERA_PROVIDER_HAL := libcamera
+TARGET_POWER_HAL := sunfish
 $(call soong_config_set,libcamera,ipa,simple)
 include device/mainline/qcom-common/optional/options.mk
 
@@ -67,6 +68,10 @@ PRODUCT_COPY_FILES += \
 # Audio: TinyHAL routing for the mainline sound card
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/audio/audio.sunfish_mainline.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.sunfish_mainline.xml
+
+# Power: boosts on touch and app launch
+PRODUCT_PACKAGES += \
+    android.hardware.power-service.sunfish
 
 # Sensors: AIDL HAL talking to the ADSP sensor core over QRTR.
 PRODUCT_PACKAGES += \
