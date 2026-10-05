@@ -5,6 +5,10 @@
  * QRTR. Bring-up tool, no dependencies.
  *
  * Usage: ssclist [timeout_seconds] [data_type...]
+ *        ssclist -s data_type [sample_rate_hz] [timeout_seconds]
+ *
+ * -s streams the default sensor of that type and prints its samples;
+ * a rate of 0 uses the on-change config (light, proximity, ...).
  */
 #include <errno.h>
 #include <stdint.h>
@@ -25,6 +29,9 @@
 #define QMI_SNS_CLIENT 0x0020
 #define SUID_REQ 512
 #define SUID_EVENT 768
+#define STD_SENSOR_CONFIG 513
+#define STD_ON_CHANGE_CONFIG 514
+#define STD_SENSOR_EVENT 1025
 
 static const char *default_types[] = {
 	"accel", "gyro", "mag", "pressure", "ambient_light", "proximity",
@@ -195,23 +202,21 @@ static int find_service(void)
 	return -1;
 }
 
-static int send_suid_req(const char *type)
+/* sns_client_request_msg to sensor (lo, hi) with an encoded payload. */
+static int send_req(uint64_t lo, uint64_t hi, uint32_t msgid,
+		    const uint8_t *payload, size_t plen)
 {
-	uint8_t suidreq[128], body[160], uid[32], cfg[16], msg[512], qmi[600];
+	uint8_t body[160], uid[32], cfg[16], msg[512], qmi[600];
 	size_t n, b, u, c, m;
 
-	n = put_bytes(suidreq, 1, type, strlen(type));
-	n += put_uint(suidreq + n, 2, 1); /* enable_updates */
-	n += put_uint(suidreq + n, 3, 1); /* only default */
-
-	b = put_bytes(body, 2, suidreq, n);
-	u = put_fixed64(uid, 1, 0xABABABABABABABABULL);
-	u += put_fixed64(uid + u, 2, 0xABABABABABABABABULL);
+	b = put_bytes(body, 2, payload, plen);
+	u = put_fixed64(uid, 1, lo);
+	u += put_fixed64(uid + u, 2, hi);
 	c = put_uint(cfg, 1, 1); /* processor: APSS */
 	c += put_uint(cfg + c, 2, 0);
 
 	m = put_bytes(msg, 1, uid, u);
-	m += put_fixed32(msg + m, 2, SUID_REQ);
+	m += put_fixed32(msg + m, 2, msgid);
 	m += put_bytes(msg + m, 3, cfg, c);
 	m += put_bytes(msg + m, 4, body, b);
 
@@ -236,6 +241,73 @@ static int send_suid_req(const char *type)
 	return sendto(sock, qmi, n, 0, (void *)&ssc, sizeof(ssc)) < 0 ? -1 : 0;
 }
 
+static int send_suid_req(const char *type)
+{
+	uint8_t suidreq[128];
+	size_t n;
+
+	n = put_bytes(suidreq, 1, type, strlen(type));
+	n += put_uint(suidreq + n, 2, 1); /* enable_updates */
+	n += put_uint(suidreq + n, 3, 1); /* only default */
+
+	return send_req(0xABABABABABABABABULL, 0xABABABABABABABABULL,
+			SUID_REQ, suidreq, n);
+}
+
+/* Streaming state for -s */
+static const char *stream_type;
+static float stream_rate;
+static int streaming;
+
+static void start_stream(uint64_t lo, uint64_t hi)
+{
+	uint8_t cfg[8];
+	size_t n = 0;
+
+	if (stream_rate > 0) {
+		uint32_t r;
+
+		memcpy(&r, &stream_rate, 4);
+		n = put_fixed32(cfg, 1, r); /* sns_std_sensor_config.sample_rate */
+	}
+	if (send_req(lo, hi, stream_rate > 0 ? STD_SENSOR_CONFIG :
+		     STD_ON_CHANGE_CONFIG, cfg, n))
+		perror("send config");
+	else
+		streaming = 1;
+}
+
+/* sns_std_sensor_event: 1 repeated float data, 2 status */
+static void print_sample(uint64_t ts, const uint8_t *d, size_t len)
+{
+	const uint8_t *p = d, *end = d + len;
+	struct pbf f;
+	int status = -1;
+
+	printf("%llu", (unsigned long long)ts);
+	while (pb_next(&p, end, &f)) {
+		float v;
+
+		if (f.field == 1 && f.wt == 5) {
+			uint32_t r = f.v;
+
+			memcpy(&v, &r, 4);
+			printf(" %g", v);
+		} else if (f.field == 1 && f.wt == 2) { /* packed */
+			size_t i;
+
+			for (i = 0; i + 4 <= f.len; i += 4) {
+				memcpy(&v, f.d + i, 4);
+				printf(" %g", v);
+			}
+		} else if (f.field == 2) {
+			status = f.v;
+		}
+	}
+	printf("  status %d\n", status);
+	fflush(stdout);
+}
+
 static void handle_event(const uint8_t *d, size_t len)
 {
 	const uint8_t *p = d, *end = d + len;
@@ -246,6 +318,7 @@ static void handle_event(const uint8_t *d, size_t len)
 		const uint8_t *q, *qe;
 		struct pbf g;
 		uint32_t msgid = 0;
+		uint64_t ts = 0;
 		const uint8_t *payload = NULL;
 		size_t plen = 0;
 
@@ -256,13 +329,29 @@ static void handle_event(const uint8_t *d, size_t len)
 		while (pb_next(&q, qe, &g)) {
 			if (g.field == 1)
 				msgid = g.v;
+			else if (g.field == 2)
+				ts = g.v;
 			else if (g.field == 3 && g.wt == 2) {
 				payload = g.d;
 				plen = g.len;
 			}
 		}
-		if (msgid != SUID_EVENT || !payload)
+		if (msgid == STD_SENSOR_EVENT && payload) {
+			print_sample(ts, payload, plen);
 			continue;
+		}
+		if (msgid != SUID_EVENT || !payload) {
+			if (streaming && msgid != SUID_EVENT) {
+				size_t i;
+
+				printf("event msg_id %u ts %llu:", msgid,
+				       (unsigned long long)ts);
+				for (i = 0; i < plen; i++)
+					printf(" %02x", payload[i]);
+				printf("\n");
+			}
+			continue;
+		}
 
 		/* SscSuidResponse: 1 data_type, 2 repeated uid{1 low,2 high} */
 		const uint8_t *r = payload, *re = payload + plen;
@@ -285,6 +374,9 @@ static void handle_event(const uint8_t *d, size_t len)
 						hi = k.v;
 				printf("  %-20s suid %016llx%016llx\n", type,
 				       (unsigned long long)hi, (unsigned long long)lo);
+				if (stream_type && !streaming && !count &&
+				    !strcmp(type, stream_type))
+					start_stream(lo, hi);
 				count++;
 			}
 		}
@@ -298,9 +390,18 @@ int main(int argc, char **argv)
 {
 	int timeout = argc > 1 ? atoi(argv[1]) : 15;
 	const char **types = argc > 2 ? (const char **)argv + 2 : default_types;
+	const char *one[2] = { NULL, NULL };
 	uint8_t buf[65536];
-	time_t start = time(NULL);
+	time_t start;
 	int i;
+
+	if (argc > 2 && !strcmp(argv[1], "-s")) {
+		stream_type = one[0] = argv[2];
+		stream_rate = argc > 3 ? atof(argv[3]) : 0;
+		timeout = argc > 4 ? atoi(argv[4]) : 10;
+		types = one;
+	}
+	start = time(NULL);
 
 	while (find_service()) {
 		if (time(NULL) - start > timeout) {
