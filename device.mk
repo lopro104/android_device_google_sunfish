@@ -64,6 +64,10 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,vendor/google/sunfish/proprietary/vendor/etc/sensors/config/,$(TARGET_COPY_OUT_VENDOR)/etc/hexagonrpcd-root/sensors/config/) \
     vendor/google/sunfish/proprietary/vendor/etc/sensors/sns_reg_config:$(TARGET_COPY_OUT_VENDOR)/etc/hexagonrpcd-root/sensors/sns_reg.conf
 
+# Audio: TinyHAL routing for the mainline sound card
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/audio/audio.sunfish_mainline.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.sunfish_mainline.xml
+
 # Sensors: AIDL HAL talking to the ADSP sensor core over QRTR.
 PRODUCT_PACKAGES += \
     android.hardware.sensors-service.sunfish

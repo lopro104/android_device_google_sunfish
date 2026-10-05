@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    SPDX-FileCopyrightText: The LineageOS Project
+    SPDX-License-Identifier: Apache-2.0
+
+    TinyHAL routing for the mainline sm7150 sound card: MultiMedia1
+    (PCM 0) is routed to the two CS35L41 speaker amps on SEC_TDM_RX_0.
+-->
+<audiohal>
+    <mixer card="0">
+        <init>
+            <ctl name="SEC_TDM_RX_0 Audio Mixer MultiMedia1" val="0" />
+        </init>
+    </mixer>
+
+    <device name="speaker">
+        <path name="on">
+            <ctl name="SEC_TDM_RX_0 Audio Mixer MultiMedia1" val="1" />
+        </path>
+        <path name="off">
+            <ctl name="SEC_TDM_RX_0 Audio Mixer MultiMedia1" val="0" />
+        </path>
+    </device>
+
+    <stream type="pcm" dir="out" card="0" device="0" rate="48000" />
+</audiohal>
