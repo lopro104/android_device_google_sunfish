@@ -124,7 +124,6 @@ int main(int argc, char **argv)
 	uint32_t client = argc > 2 ? atoi(argv[2]) : 1; /* 1 AFW, 2 NFW, 3 privileged */
 	n = 0;
 	tlv(t, &n, 0x01, &mask, 8);
-	tlv(t, &n, 0x10, "locget", 6);
 	tlv(t, &n, 0x11, &client, 4);
 	send_req(LOC_REG_EVENTS, t, n);
 
