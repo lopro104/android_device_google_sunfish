@@ -6,7 +6,8 @@ Pixel 4a (sunfish) on a mainline 7.1 kernel (https://github.com/lopro104/linux, 
 
 Works:
 - Display, touch, haptics, Wi-Fi, Bluetooth, NFC, USB
-- Speakers (secondary TDM, CS35L41 x2)
+- Speakers (secondary TDM, CS35L41 x2 with speaker protection firmware + factory calibration)
+- Microphones (RT5514P DSP mode over SPI, tertiary TDM)
 - Rear and front camera (libcamera simple pipeline + soft ISP, https://github.com/lopro104/libcamera-sunfish),
   rear autofocus (LC898219XI, contrast detect)
 - Sensors through the ADSP sensor core: accelerometer, gyroscope, magnetometer, pressure, light
@@ -16,8 +17,7 @@ Works:
 
 In progress:
 - GPS: modem QMI LOC HAL (gnss/), waiting for an outdoor test
-- Microphones: RT5514P link works, the DMICs stay silent
-- Speaker protection firmware (louder speakers)
+- Display: occasional DSI FIFO errors (white screen) during screen on/off
 
 Doesn't work:
 - Fingerprint, calls/SIM
