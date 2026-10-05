@@ -22,6 +22,6 @@ In progress:
 Doesn't work:
 - Fingerprint, calls/SIM
 
-Bring-up tools in tools/ (ssclist, qrtrls, locget, camcap).
+Bring-up tools in tools/ (ssclist, qrtrls, locget, camcap, Rec.java).
 
 If something dosen't work in postmarketOS then it probably wont work here too!
