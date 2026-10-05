@@ -41,7 +41,8 @@ class BoostManager {
     Clock::time_point mLaunchUntil;
 
     std::string mLittleMinDefault, mBigMinDefault, mLittleMax, mBigMax;
-    std::string mLittleMin, mBigMin, mUclamp;  // last written values
+    std::string mGpuMinDefault, mGpuBoost;
+    std::string mLittleMin, mBigMin, mUclamp, mGpuMin;  // last written values
 };
 
 }  // namespace aidl::android::hardware::power::impl::sunfish

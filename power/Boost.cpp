@@ -11,6 +11,9 @@
 #include <android-base/logging.h>
 #include <android-base/strings.h>
 
+#include <algorithm>
+#include <vector>
+
 namespace aidl::android::hardware::power::impl::sunfish {
 
 using ::android::base::ReadFileToString;
@@ -26,6 +29,8 @@ constexpr const char* kBigHwMin = "/sys/devices/system/cpu/cpufreq/policy6/cpuin
 constexpr const char* kLittleHwMax = "/sys/devices/system/cpu/cpufreq/policy0/cpuinfo_max_freq";
 constexpr const char* kBigHwMax = "/sys/devices/system/cpu/cpufreq/policy6/cpuinfo_max_freq";
 constexpr const char* kTopAppUclampMin = "/dev/cpuctl/top-app/cpu.uclamp.min";
+constexpr const char* kGpuMin = "/sys/class/devfreq/5000000.gpu/min_freq";
+constexpr const char* kGpuFreqs = "/sys/class/devfreq/5000000.gpu/available_frequencies";
 
 // Values from the stock powerhint.json (schedtune.boost -> uclamp.min %)
 constexpr const char* kInteractionLittleMin = "1248000";
@@ -56,6 +61,17 @@ BoostManager::BoostManager() {
     mBigMinDefault = readValue(kBigHwMin, "300000");
     mLittleMax = readValue(kLittleHwMax, "9999999");
     mBigMax = readValue(kBigHwMax, "9999999");
+
+    // GPU: idle at the lowest OPP, boost launches to the middle one
+    // (stock raised the GPU minimum power level while launching apps).
+    std::string freqs = readValue(kGpuFreqs, "");
+    std::vector<std::string> opps = ::android::base::Split(freqs, " ");
+    std::sort(opps.begin(), opps.end(),
+              [](const std::string& a, const std::string& b) { return std::stoull(a) < std::stoull(b); });
+    if (!opps.empty() && !opps[0].empty()) {
+        mGpuMinDefault = opps.front();
+        mGpuBoost = opps[opps.size() / 2];
+    }
     mThread = std::thread(&BoostManager::loop, this);
 }
 
@@ -97,6 +113,8 @@ void BoostManager::apply() {
                launch ? mLittleMax : interaction ? kInteractionLittleMin : mLittleMinDefault,
                &mLittleMin);
     writeValue(kBigMin, launch ? mBigMax : mBigMinDefault, &mBigMin);
+    if (!mGpuMinDefault.empty())
+        writeValue(kGpuMin, launch ? mGpuBoost : mGpuMinDefault, &mGpuMin);
     writeValue(kTopAppUclampMin,
                launch ? kUclampLaunch : interaction ? kUclampInteraction : kUclampIdle,
                &mUclamp);
