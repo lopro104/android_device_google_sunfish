@@ -73,8 +73,8 @@ PRODUCT_COPY_FILES += \
 # (cirrus,subsystem-id = "sunfish"; per-amp tuning by the L/R name prefix)
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/audio/cs35l41/cs35l41-dsp1-spk-prot.wmfw:$(TARGET_COPY_OUT_VENDOR)/firmware/cirrus/cs35l41-dsp1-spk-prot-sunfish.wmfw \
-    $(DEVICE_PATH)/audio/cs35l41/cs35l41-dsp1-spk-prot.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/cirrus/cs35l41-dsp1-spk-prot-sunfish-L.bin \
-    $(DEVICE_PATH)/audio/cs35l41/R-cs35l41-dsp1-spk-prot.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/cirrus/cs35l41-dsp1-spk-prot-sunfish-R.bin
+    $(DEVICE_PATH)/audio/cs35l41/cs35l41-dsp1-spk-prot.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/cirrus/cs35l41-dsp1-spk-prot-sunfish-l.bin \
+    $(DEVICE_PATH)/audio/cs35l41/R-cs35l41-dsp1-spk-prot.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/cirrus/cs35l41-dsp1-spk-prot-sunfish-r.bin
 
 # GNSS: AIDL HAL on the modem's QMI LOC service
 PRODUCT_PACKAGES += \
