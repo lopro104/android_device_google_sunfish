@@ -60,3 +60,10 @@ service vendor.speakercal /vendor/bin/init.sunfish.speakercal.sh
 
 on property:init.svc.vendor.audio-hal=running
     start vendor.speakercal
+
+# Restart audio after an ADSP crash so remoteproc recovery can finish
+service vendor.adspwatch /vendor/bin/init.sunfish.adspwatch.sh
+    class late_start
+    user root
+    group root audio
+    seclabel u:r:vendor_init:s0
