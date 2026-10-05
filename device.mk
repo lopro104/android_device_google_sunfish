@@ -65,9 +65,11 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,vendor/google/sunfish/proprietary/vendor/etc/sensors/config/,$(TARGET_COPY_OUT_VENDOR)/etc/hexagonrpcd-root/sensors/config/) \
     vendor/google/sunfish/proprietary/vendor/etc/sensors/sns_reg_config:$(TARGET_COPY_OUT_VENDOR)/etc/hexagonrpcd-root/sensors/sns_reg.conf
 
-# Audio: TinyHAL routing for the mainline sound card
+# Audio: TinyHAL routing for the mainline sound card, and a primary
+# policy with the microphones (the common sm7150 one only has a speaker)
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/audio/audio.sunfish_mainline.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.sunfish_mainline.xml
+    $(DEVICE_PATH)/audio/audio.sunfish_mainline.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.sunfish_mainline.xml \
+    $(DEVICE_PATH)/audio/primary_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/primary_audio_policy_configuration.xml
 
 # CS35L41 speaker protection firmware, named for the mainline wm_adsp loader
 # (cirrus,subsystem-id = "sunfish"; per-amp tuning by the L/R name prefix)
@@ -76,6 +78,10 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/audio/cs35l41/cs35l41-dsp1-spk-prot.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/cirrus/cs35l41-dsp1-spk-prot-sunfish-l.bin \
     $(DEVICE_PATH)/audio/cs35l41/R-cs35l41-dsp1-spk-prot.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/cirrus/cs35l41-dsp1-spk-prot-sunfish-r.bin \
     $(DEVICE_PATH)/audio/init.sunfish.speakercal.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.sunfish.speakercal.sh
+
+# RT5514P DSP firmware: the microphones are recorded through its DSP
+PRODUCT_COPY_FILES += \
+    $(call find-copy-subdir-files,rt5514p_dsp_fw*.bin,$(DEVICE_PATH)/audio/rt5514/,$(TARGET_COPY_OUT_VENDOR)/firmware/)
 
 # GNSS: AIDL HAL on the modem's QMI LOC service
 PRODUCT_PACKAGES += \

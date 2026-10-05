@@ -199,3 +199,6 @@ BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 # VINTF
 DEVICE_MANIFEST_FILE := \
     $(DEVICE_PATH)/vintf/manifest.xml
+
+# Audio: sunfish installs its own primary policy (with the microphones)
+$(call soong_config_set,mainline_qcom_common_soc,primary_audio_policy_configuration_variant,none)
