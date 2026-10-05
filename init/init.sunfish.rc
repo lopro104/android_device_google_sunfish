@@ -34,3 +34,17 @@ on init
 on property:sys.boot_completed=1
     swapon_all /vendor/etc/fstab.sunfish
     write /proc/sys/vm/swappiness 100
+
+# Scheduler tuning after stock init.hardware.rc. Mainline has no schedtune:
+# the top-app boost / prefer_idle become uclamp.min / latency_sensitive.
+on property:sys.boot_completed=1
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/foreground/cpus 0-5,7
+    write /dev/cpuset/background/cpus 4-5
+    write /dev/cpuset/system-background/cpus 2-5
+    write /dev/cpuset/restricted/cpus 2-5
+    write /dev/cpuctl/top-app/cpu.uclamp.min 10
+    write /dev/cpuctl/top-app/cpu.uclamp.latency_sensitive 1
+    write /dev/cpuctl/foreground/cpu.uclamp.latency_sensitive 1
+    write /sys/devices/system/cpu/cpufreq/policy0/schedutil/rate_limit_us 500
+    write /sys/devices/system/cpu/cpufreq/policy6/schedutil/rate_limit_us 500
