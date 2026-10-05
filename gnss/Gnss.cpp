@@ -309,39 +309,39 @@ ScopedAStatus Gnss::getExtensionGnssPowerIndication(
         std::shared_ptr<IGnssPowerIndication>* iGnssPowerIndication) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iGnssPowerIndication = nullptr;
-    return ScopedAStatus::ok();
+    return ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 ScopedAStatus Gnss::getExtensionGnssMeasurement(
         std::shared_ptr<IGnssMeasurementInterface>* iGnssMeasurement) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iGnssMeasurement = nullptr;
-    return ScopedAStatus::ok();
+    return ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 ScopedAStatus Gnss::getExtensionGnssBatching(std::shared_ptr<IGnssBatching>* iGnssBatching) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iGnssBatching = nullptr;
-    return ScopedAStatus::ok();
+    return ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 ScopedAStatus Gnss::getExtensionGnssGeofence(std::shared_ptr<IGnssGeofence>* iGnssGeofence) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iGnssGeofence = nullptr;
-    return ScopedAStatus::ok();
+    return ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 ScopedAStatus Gnss::getExtensionGnssNavigationMessage(
         std::shared_ptr<IGnssNavigationMessageInterface>* iGnssNavigationMessage) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iGnssNavigationMessage = nullptr;
-    return ScopedAStatus::ok();
+    return ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 ndk::ScopedAStatus Gnss::getExtensionGnssDebug(std::shared_ptr<IGnssDebug>* iGnssDebug) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iGnssDebug = nullptr;
-    return ndk::ScopedAStatus::ok();
+    return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 ndk::ScopedAStatus Gnss::getExtensionGnssVisibilityControl(
@@ -356,7 +356,7 @@ ndk::ScopedAStatus Gnss::getExtensionGnssAntennaInfo(
         std::shared_ptr<IGnssAntennaInfo>* iGnssAntennaInfo) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iGnssAntennaInfo = nullptr;
-    return ndk::ScopedAStatus::ok();
+    return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 ndk::ScopedAStatus Gnss::getExtensionMeasurementCorrections(
@@ -364,14 +364,14 @@ ndk::ScopedAStatus Gnss::getExtensionMeasurementCorrections(
                 iMeasurementCorrections) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iMeasurementCorrections = nullptr;
-    return ndk::ScopedAStatus::ok();
+    return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 ndk::ScopedAStatus Gnss::getExtensionGnssAssistanceInterface(
         std::shared_ptr<gnss_assistance::IGnssAssistanceInterface>* iGnssAssistanceInterface) {
     // Not backed by the modem; the AOSP default implementation only returns mock data.
     *iGnssAssistanceInterface = nullptr;
-    return ndk::ScopedAStatus::ok();
+    return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
 void Gnss::setGnssMeasurementEnabled(const bool enabled) {
