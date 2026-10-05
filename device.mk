@@ -69,6 +69,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/audio/audio.sunfish_mainline.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.sunfish_mainline.xml
 
+# GNSS: AIDL HAL on the modem's QMI LOC service
+PRODUCT_PACKAGES += \
+    android.hardware.gnss-service.sunfish
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.location.gps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.location.gps.xml
+
 # Power: boosts on touch and app launch
 PRODUCT_PACKAGES += \
     android.hardware.power-service.sunfish

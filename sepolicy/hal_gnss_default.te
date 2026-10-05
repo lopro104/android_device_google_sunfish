@@ -1,0 +1,2 @@
+# Modem GNSS over QRTR (QMI LOC)
+allow hal_gnss_default self:qipcrtr_socket create_socket_perms_no_ioctl;

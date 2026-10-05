@@ -1,3 +1,4 @@
 /dev/block/platform/soc@0/1d84000\.ufshc/by-name/esp    u:object_r:esp_block_device:s0
 /vendor/bin/hw/android\.hardware\.sensors-service\.sunfish    u:object_r:hal_sensors_default_exec:s0
 /vendor/bin/hw/android\.hardware\.power-service\.sunfish    u:object_r:hal_power_default_exec:s0
+/vendor/bin/hw/android\.hardware\.gnss-service\.sunfish    u:object_r:hal_gnss_default_exec:s0

@@ -1,0 +1,4 @@
+service vendor.gnss-sunfish /vendor/bin/hw/android.hardware.gnss-service.sunfish
+    class hal
+    user gps
+    group system gps
