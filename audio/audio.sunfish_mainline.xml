@@ -21,6 +21,10 @@
             <ctl name="R DSP1 Preload Switch" val="1" />
             <ctl name="L PCM Source" val="DSP" />
             <ctl name="R PCM Source" val="DSP" />
+
+            <!-- Stock amplifier gain, safe with the protection firmware -->
+            <ctl name="L Analog PCM Volume" val="17" />
+            <ctl name="R Analog PCM Volume" val="17" />
         </init>
     </mixer>
 

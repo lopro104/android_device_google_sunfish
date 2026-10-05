@@ -48,3 +48,15 @@ on property:sys.boot_completed=1
     write /dev/cpuctl/foreground/cpu.uclamp.latency_sensitive 1
     write /sys/devices/system/cpu/cpufreq/policy0/schedutil/rate_limit_us 500
     write /sys/devices/system/cpu/cpufreq/policy6/schedutil/rate_limit_us 500
+
+# Factory speaker calibration for the CS35L41 protection firmware
+service vendor.speakercal /vendor/bin/init.sunfish.speakercal.sh
+    class late_start
+    user system
+    group system audio
+    seclabel u:r:hal_audio_default:s0
+    oneshot
+    disabled
+
+on property:init.svc.vendor.audio-hal=running
+    start vendor.speakercal
